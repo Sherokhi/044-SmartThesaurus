@@ -9,3 +9,14 @@ F:\Applications-Projets\044-P_OO\Git\044-SmartThesaurus\ThesaurusoIndexor\Thesau
 F:\Applications-Projets\044-P_OO\Git\044-SmartThesaurus\ThesaurusoIndexor\ThesaurusoIndexor\bin\Debug\MySql.Data.xml
 F:\Applications-Projets\044-P_OO\Git\044-SmartThesaurus\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.exe
 F:\Applications-Projets\044-P_OO\Git\044-SmartThesaurus\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.pdb
+C:\Users\rossetlo\Desktop\P_OO\044-SmartThesaurus\ThesaurusoIndexor\ThesaurusoIndexor\bin\Debug\ThesaurusoIndexor.exe.config
+C:\Users\rossetlo\Desktop\P_OO\044-SmartThesaurus\ThesaurusoIndexor\ThesaurusoIndexor\bin\Debug\ThesaurusoIndexor.exe
+C:\Users\rossetlo\Desktop\P_OO\044-SmartThesaurus\ThesaurusoIndexor\ThesaurusoIndexor\bin\Debug\ThesaurusoIndexor.pdb
+C:\Users\rossetlo\Desktop\P_OO\044-SmartThesaurus\ThesaurusoIndexor\ThesaurusoIndexor\bin\Debug\MySql.Data.dll
+C:\Users\rossetlo\Desktop\P_OO\044-SmartThesaurus\ThesaurusoIndexor\ThesaurusoIndexor\bin\Debug\MySql.Data.xml
+C:\Users\rossetlo\Desktop\P_OO\044-SmartThesaurus\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.csprojResolveAssemblyReference.cache
+C:\Users\rossetlo\Desktop\P_OO\044-SmartThesaurus\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.Form1.resources
+C:\Users\rossetlo\Desktop\P_OO\044-SmartThesaurus\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.Properties.Resources.resources
+C:\Users\rossetlo\Desktop\P_OO\044-SmartThesaurus\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.csproj.GenerateResource.Cache
+C:\Users\rossetlo\Desktop\P_OO\044-SmartThesaurus\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.exe
+C:\Users\rossetlo\Desktop\P_OO\044-SmartThesaurus\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.pdb
