@@ -69,7 +69,7 @@ namespace ThesaurusoIndexor
 
             {
                 MessageBox.Show("Connexion refusée !" +
-                    "erreur : " + e.Message());
+                    "erreur : " + e.Message);
             }
 
 
