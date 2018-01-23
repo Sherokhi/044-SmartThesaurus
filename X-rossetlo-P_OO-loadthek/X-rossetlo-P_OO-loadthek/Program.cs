@@ -21,9 +21,7 @@ namespace X_rossetlo_P_OO_loadthek
                                 //On lit chaque ligne du contenu du fichier
                             from line in File.ReadLines(file)
                                 //On sélectionne que certains qui possède le contenu spécifié
-                            where file.Contains("asas")
-                            fdghfgfdd
-                            where line.Contains("asas")
+                            where file.Contains("asas") || line.Contains("asas")
                             select new
                             {
                                 File = file,
