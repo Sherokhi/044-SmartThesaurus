@@ -31,6 +31,7 @@ namespace ThesaurusoIndexor
 
         private void btn_Research_Click(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor;
             switch (cbResearchLocation.SelectedIndex)
             {
                 case 0: //Si la recherche doit chercher partout

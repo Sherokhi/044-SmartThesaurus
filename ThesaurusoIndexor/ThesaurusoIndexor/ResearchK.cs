@@ -45,19 +45,23 @@ namespace algoResearch
                 try
                 {
                     //Pour les fichiers qui contiennent la contrainte dans leur chemin
-                    string[] files = Directory.GetFiles(@"K:\INF\Eleves\Temp\fichier", "*" + str + "*", SearchOption.AllDirectories);
+                    string[] files = Directory.GetFiles(@"K:\INF\Eleves\temp", "*" + str + "*", SearchOption.AllDirectories);
                     form1.pbLoad.Maximum = files.Count();
                     form1.btn_Research.Enabled = false;
                     foreach (string s in files)
                     {
-                        Thread.Sleep(20);
+                        //Thread.Sleep(20);
                         counter++;
                         allData += s + "\r\n";
                         form1.rtbResult.Text = allData;
-                        form1.pbLoad.Value++;
+                        if(form1.pbLoad.Value < form1.pbLoad.Maximum)
+                        {
+                            form1.pbLoad.Value++;
+                        }
                         form1.Update();
                         form1.lblResearchNumber.Text = counter.ToString();
                     }
+                    form1.Cursor = Cursors.Arrow;
                     form1.btn_Research.Enabled = true;
                     ////Nombre de fichiers trouvés
                     form1.lblResearchNumber.Text = files.Count().ToString();
