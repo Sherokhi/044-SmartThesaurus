@@ -28,9 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.btn_Research = new System.Windows.Forms.Button();
             this.txb_Research = new System.Windows.Forms.TextBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cbResearchLocation = new System.Windows.Forms.ComboBox();
+            this.txbTest = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btn_Research
@@ -52,27 +54,36 @@
             this.txb_Research.TabIndex = 1;
             this.txb_Research.TextChanged += new System.EventHandler(this.txb_Research_TextChanged);
             // 
-            // comboBox1
+            // cbResearchLocation
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.cbResearchLocation.FormattingEnabled = true;
+            this.cbResearchLocation.Items.AddRange(new object[] {
             "Tout",
             "etml.ch",
             "educanet2.ch",
             "K:\\INF\\Eleves\\Temp"});
-            this.comboBox1.Location = new System.Drawing.Point(13, 69);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 2;
+            this.cbResearchLocation.Location = new System.Drawing.Point(13, 69);
+            this.cbResearchLocation.Name = "cbResearchLocation";
+            this.cbResearchLocation.Size = new System.Drawing.Size(121, 21);
+            this.cbResearchLocation.TabIndex = 2;
+            // 
+            // txbTest
+            // 
+            this.txbTest.Location = new System.Drawing.Point(186, 256);
+            this.txbTest.Name = "txbTest";
+            this.txbTest.Size = new System.Drawing.Size(100, 20);
+            this.txbTest.TabIndex = 3;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(691, 526);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.txbTest);
+            this.Controls.Add(this.cbResearchLocation);
             this.Controls.Add(this.txb_Research);
             this.Controls.Add(this.btn_Research);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Thesaurus - INDEXOR";
             this.ResumeLayout(false);
@@ -84,7 +95,8 @@
 
         private System.Windows.Forms.Button btn_Research;
         private System.Windows.Forms.TextBox txb_Research;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cbResearchLocation;
+        private System.Windows.Forms.TextBox txbTest;
     }
 }
 
