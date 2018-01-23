@@ -10,83 +10,75 @@ using System.Threading.Tasks;
 using MySql.Data;
 using MySql.Data.MySqlClient;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace ThesaurusoIndexor
 {
     public class DBConnect
     {
-        private MySqlConnection connection;
-        private string server;
-        private string database;
-        private string uid;
-        private string password;
+        /// <summary>
+        /// Connexion à la base de donnée MySQL
+        /// </summary>
+        private MySqlConnection _Connection = new MySqlConnection(); //nouvelle connection à MySQL
 
+        /// <summary>
+        /// Nom de la base de donnée
+        /// </summary>
+        private const string _DATABASENAME ="db_thesaurus";
+
+        /// <summary>
+        /// Source du réseau externe
+        /// </summary>
+        private const string _SOURCE = "localhost";
+
+        /// <summary>
+        /// Username de l'admin
+        /// </summary>
+        private const string _ADMINSUSER = "root";
+
+        /// <summary>
+        /// Mot de passe de l'admin
+        /// </summary>
+        private const string _ADMINPASSWORD = "";
+
+
+        /// <summary>
+        /// Constructeur de classe
+        /// </summary>
         public DBConnect()
         {
-            Initialize();
+            ConnectionSQL();
         }
 
-        private void Initialize()
+        /// <summary>
+        /// Méthode de connexion à la base de donnée
+        /// </summary>
+        public void ConnectionSQL()
         {
-            server = "localhost";
-            database = "db_thesaurus";
-            uid = "admin";
-            password = "admin";
-            string connectionString;
-            connectionString = "SERVER=" + server + ";" + "DATABASE=" +
-            database + ";" + "UID=" + uid + ";" + "PASSWORD=" + password + ";";
+            string _ConnectionString = "Database=" + _DATABASENAME + ";Data Source=" + _SOURCE + ";User Id=" + _ADMINSUSER + ";Password=" + _ADMINPASSWORD;
 
-            connection = new MySqlConnection(connectionString);
-        }
+            _Connection.ConnectionString = _ConnectionString;
 
-
-        //open connection to database
-        private bool OpenConnection()
-        {
             try
             {
-                connection.Open();
-                return true;
-            }
-            catch (MySqlException ex)
-            {
-                //When handling errors, you can your application's response based 
-                //on the error number.
-                //The two most common error numbers when connecting are as follows:
-                //0: Cannot connect to server.
-                //1045: Invalid user name and/or password.
-                switch (ex.Number)
-                {
-                    case 0:
-                        MessageBox.Show("Cannot connect to server.  Contact administrator");
-                        break;
+                _Connection.Open();
+                MessageBox.Show("Connexion établie !");
 
-                    case 1045:
-                        MessageBox.Show("Invalid username/password, please try again");
-                        break;
-                }
-                return false;
             }
+            catch(ArgumentException e)
+
+            {
+                MessageBox.Show("Connexion refusée !" +
+                    "erreur : " + e.Message());
+            }
+
+
+
+            Thread.Sleep(1000);
+            _Connection.Close();
+
+            MessageBox.Show("Connexion fermé !");
         }
 
-        //Close connection
-        private bool CloseConnection()
-        {
-            try
-            {
-                connection.Close();
-                return true;
-            }
-            catch (MySqlException ex)
-            {
-                MessageBox.Show(ex.Message);
-                return false;
-            }
-        }
-
-        public void Query(string typeQuery, string attributeSelect, string tableSelect, string condition)
-        {
-            
-        }
     }
 }
