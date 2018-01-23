@@ -32,13 +32,15 @@
             this.btn_Research = new System.Windows.Forms.Button();
             this.txb_Research = new System.Windows.Forms.TextBox();
             this.cbResearchLocation = new System.Windows.Forms.ComboBox();
-            this.txbTest = new System.Windows.Forms.TextBox();
+            this.rtbResult = new System.Windows.Forms.RichTextBox();
+            this.lblResearchNumber = new System.Windows.Forms.Label();
+            this.pbLoad = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
             // btn_Research
             // 
             this.btn_Research.Enabled = false;
-            this.btn_Research.Location = new System.Drawing.Point(302, 121);
+            this.btn_Research.Location = new System.Drawing.Point(170, 125);
             this.btn_Research.Name = "btn_Research";
             this.btn_Research.Size = new System.Drawing.Size(75, 23);
             this.btn_Research.TabIndex = 0;
@@ -67,19 +69,39 @@
             this.cbResearchLocation.Size = new System.Drawing.Size(121, 21);
             this.cbResearchLocation.TabIndex = 2;
             // 
-            // txbTest
+            // rtbResult
             // 
-            this.txbTest.Location = new System.Drawing.Point(186, 256);
-            this.txbTest.Name = "txbTest";
-            this.txbTest.Size = new System.Drawing.Size(100, 20);
-            this.txbTest.TabIndex = 3;
+            this.rtbResult.Location = new System.Drawing.Point(170, 165);
+            this.rtbResult.Name = "rtbResult";
+            this.rtbResult.Size = new System.Drawing.Size(349, 240);
+            this.rtbResult.TabIndex = 4;
+            this.rtbResult.Text = "";
+            // 
+            // lblResearchNumber
+            // 
+            this.lblResearchNumber.AutoSize = true;
+            this.lblResearchNumber.Location = new System.Drawing.Point(252, 134);
+            this.lblResearchNumber.Name = "lblResearchNumber";
+            this.lblResearchNumber.Size = new System.Drawing.Size(22, 13);
+            this.lblResearchNumber.TabIndex = 5;
+            this.lblResearchNumber.Text = "-----";
+            // 
+            // pbLoad
+            // 
+            this.pbLoad.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.pbLoad.Location = new System.Drawing.Point(170, 96);
+            this.pbLoad.Name = "pbLoad";
+            this.pbLoad.Size = new System.Drawing.Size(349, 23);
+            this.pbLoad.TabIndex = 6;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(691, 526);
-            this.Controls.Add(this.txbTest);
+            this.Controls.Add(this.pbLoad);
+            this.Controls.Add(this.lblResearchNumber);
+            this.Controls.Add(this.rtbResult);
             this.Controls.Add(this.cbResearchLocation);
             this.Controls.Add(this.txb_Research);
             this.Controls.Add(this.btn_Research);
@@ -92,11 +114,12 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button btn_Research;
         private System.Windows.Forms.TextBox txb_Research;
         private System.Windows.Forms.ComboBox cbResearchLocation;
-        private System.Windows.Forms.TextBox txbTest;
+        public System.Windows.Forms.RichTextBox rtbResult;
+        public System.Windows.Forms.Label lblResearchNumber;
+        public System.Windows.Forms.ProgressBar pbLoad;
+        public System.Windows.Forms.Button btn_Research;
     }
 }
 

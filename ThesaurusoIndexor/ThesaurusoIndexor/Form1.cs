@@ -14,17 +14,19 @@ using System.Windows.Forms;
 using MySql.Data;
 using MySql.Data.MySqlClient;
 using System.Net;
+using algoResearch;
 
 namespace ThesaurusoIndexor
 {
     public partial class Form1 : Form
     {
         DBConnect database;
+        ResearchK searchK;
         public Form1()
         {
             InitializeComponent();
-            database = new DBConnect();
-            cbResearchLocation.SelectedIndex = 1;
+            //database = new DBConnect();
+            //cbResearchLocation.SelectedIndex = 1;
         }
 
         private void btn_Research_Click(object sender, EventArgs e)
@@ -41,6 +43,9 @@ namespace ThesaurusoIndexor
 
                     break;
                 case 3: //Si la recherche doit chercher sur K:\INF\ELEVE\Temp
+                    searchK = ResearchK.CreateResearch();
+                    searchK.GetResearch(txb_Research.Text);
+                    searchK.BeginTheReasearch();
 
                     break;
             }
