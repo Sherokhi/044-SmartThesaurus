@@ -57,9 +57,28 @@ namespace ThesaurusoIndexor
             string[] contenu = new string[2000];
 
             string[] subsStrings = wordsToSearch.Split(' ');
+            //Uri urlPath = "https://www.etml.ch/";
+
+            //string codeHtml = client.DownloadString(urlPath);
+
+            //Create the WebBrowser control
+            WebBrowser wb = new WebBrowser();
+            //Add a new event to process document when download is completed   
+            wb.DocumentCompleted +=
+                new WebBrowserDocumentCompletedEventHandler(DisplayText);
+            //Download the webpage
+            //wb.Url = urlPath;
 
 
-            string codeHtml = client.DownloadString("https://www.etml.ch/");
+
+        }
+
+        private void DisplayText(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            WebBrowser wb = (WebBrowser)sender;
+            wb.Document.ExecCommand("SelectAll", false, null);
+            wb.Document.ExecCommand("Copy", false, null);
+            //txbTest.Text = CleanText(Clipboard.GetText());
         }
     }
 }
