@@ -12,30 +12,19 @@ namespace X_rossetlo_P_OO_loadthek
         static void Main(string[] args)
         {
 
-            try
+            Console.WriteLine("Entrer le mot à rechercher");
+            string []entre = Console.ReadLine().Split(' ');
+
+            foreach(string str in entre)
             {
-                //Créer un ensemble de fichiers situés dans le chemin spécifié
 
                 //Pour les fichiers qui contiennent la contrainte dans leur chemin
-                var files = from file in Directory.EnumerateFiles(@"H:\EssaiK", "*.txt", SearchOption.AllDirectories)
-                                //On lit chaque ligne du contenu du fichier
-                            from line in File.ReadLines(file)
-                                //On sélectionne que certains qui possède le contenu spécifié
-                            where file.Contains("asas")
-                            fdghfgfdd
-                            where line.Contains("asas")
-                            select new
-                            {
-                                File = file,
-                                Line = line
-                            };
-
-                //Pour chaque fichier dans l'ensemble de fichier, on affiche son chemin et son contenu
-                foreach (var f in files)
+                string[] files = Directory.GetFiles(@"K:\INF\eleves", "*" + str + "*", SearchOption.AllDirectories);
+                foreach (string s in files)
                 {
-                    Console.WriteLine("{0}", f.File);
+                    Console.WriteLine(s);
                 }
-                //Nombre de fichiers trouvés
+                ////Nombre de fichiers trouvés
                 Console.WriteLine("{0} files found.", files.Count().ToString());
             }
             catch (UnauthorizedAccessException UAEx)
@@ -46,6 +35,9 @@ namespace X_rossetlo_P_OO_loadthek
             {
                 Console.WriteLine(PathEx.Message);
             }
+        }
+            try
+            {
 
             Console.ReadLine();
         }
