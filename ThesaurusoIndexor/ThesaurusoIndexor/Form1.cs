@@ -15,6 +15,7 @@ using MySql.Data;
 using MySql.Data.MySqlClient;
 using System.Net;
 using algoResearch;
+using System.Threading;
 
 namespace ThesaurusoIndexor
 {
@@ -31,7 +32,6 @@ namespace ThesaurusoIndexor
 
         private void btn_Research_Click(object sender, EventArgs e)
         {
-            Cursor = Cursors.WaitCursor;
             switch (cbResearchLocation.SelectedIndex)
             {
                 case 0: //Si la recherche doit chercher partout
@@ -44,17 +44,27 @@ namespace ThesaurusoIndexor
 
                     break;
                 case 3: //Si la recherche doit chercher sur K:\INF\ELEVE\Temp
+                    btn_Research.Location = new Point(100000, 100000);
+                    timerButton.Enabled = true;
+
+                    Cursor = Cursors.WaitCursor;
                     searchK = ResearchK.CreateResearch();
                     searchK.GetResearch(txb_Research.Text);
                     searchK.BeginTheReasearch();
 
                     break;
             }
+
         }
 
         private void txb_Research_TextChanged(object sender, EventArgs e)
         {
-            btn_Research.Enabled = txb_Research.Text.Length > 0;
+
+        }
+
+        public void label_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void ETMLRes(string wordsToSearch)
@@ -85,6 +95,17 @@ namespace ThesaurusoIndexor
             wb.Document.ExecCommand("SelectAll", false, null);
             wb.Document.ExecCommand("Copy", false, null);
             //txbTest.Text = CleanText(Clipboard.GetText());
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void timerButton_Tick(object sender, EventArgs e)
+        {
+            btn_Research.Location = new Point( 884, 9);
+            timerButton.Enabled = false;
         }
     }
 }
