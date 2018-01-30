@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.btn_Research = new System.Windows.Forms.Button();
             this.txb_Research = new System.Windows.Forms.TextBox();
@@ -35,14 +36,16 @@
             this.rtbResult = new System.Windows.Forms.RichTextBox();
             this.lblResearchNumber = new System.Windows.Forms.Label();
             this.pbLoad = new System.Windows.Forms.ProgressBar();
+            this.rtbResultData = new System.Windows.Forms.RichTextBox();
+            this.timerButton = new System.Windows.Forms.Timer(this.components);
+            this.pnlResearch = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // btn_Research
             // 
-            this.btn_Research.Enabled = false;
-            this.btn_Research.Location = new System.Drawing.Point(170, 125);
+            this.btn_Research.Location = new System.Drawing.Point(884, 9);
             this.btn_Research.Name = "btn_Research";
-            this.btn_Research.Size = new System.Drawing.Size(75, 23);
+            this.btn_Research.Size = new System.Drawing.Size(75, 53);
             this.btn_Research.TabIndex = 0;
             this.btn_Research.Text = "Rechercher";
             this.btn_Research.UseVisualStyleBackColor = true;
@@ -50,9 +53,9 @@
             // 
             // txb_Research
             // 
-            this.txb_Research.Location = new System.Drawing.Point(170, 69);
+            this.txb_Research.Location = new System.Drawing.Point(174, 12);
             this.txb_Research.Name = "txb_Research";
-            this.txb_Research.Size = new System.Drawing.Size(349, 20);
+            this.txb_Research.Size = new System.Drawing.Size(704, 20);
             this.txb_Research.TabIndex = 1;
             this.txb_Research.TextChanged += new System.EventHandler(this.txb_Research_TextChanged);
             // 
@@ -65,23 +68,25 @@
             "etml.ch",
             "educanet2.ch",
             "K:\\INF\\Eleves\\Temp"});
-            this.cbResearchLocation.Location = new System.Drawing.Point(13, 69);
+            this.cbResearchLocation.Location = new System.Drawing.Point(17, 12);
             this.cbResearchLocation.Name = "cbResearchLocation";
             this.cbResearchLocation.Size = new System.Drawing.Size(121, 21);
             this.cbResearchLocation.TabIndex = 2;
             // 
             // rtbResult
             // 
-            this.rtbResult.Location = new System.Drawing.Point(170, 165);
+            this.rtbResult.BackColor = System.Drawing.Color.White;
+            this.rtbResult.Location = new System.Drawing.Point(13, 95);
             this.rtbResult.Name = "rtbResult";
-            this.rtbResult.Size = new System.Drawing.Size(349, 240);
+            this.rtbResult.ReadOnly = true;
+            this.rtbResult.Size = new System.Drawing.Size(492, 310);
             this.rtbResult.TabIndex = 4;
             this.rtbResult.Text = "";
             // 
             // lblResearchNumber
             // 
             this.lblResearchNumber.AutoSize = true;
-            this.lblResearchNumber.Location = new System.Drawing.Point(252, 134);
+            this.lblResearchNumber.Location = new System.Drawing.Point(14, 49);
             this.lblResearchNumber.Name = "lblResearchNumber";
             this.lblResearchNumber.Size = new System.Drawing.Size(22, 13);
             this.lblResearchNumber.TabIndex = 5;
@@ -90,16 +95,40 @@
             // pbLoad
             // 
             this.pbLoad.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.pbLoad.Location = new System.Drawing.Point(170, 96);
+            this.pbLoad.Location = new System.Drawing.Point(174, 39);
             this.pbLoad.Name = "pbLoad";
-            this.pbLoad.Size = new System.Drawing.Size(349, 23);
+            this.pbLoad.Size = new System.Drawing.Size(704, 23);
             this.pbLoad.TabIndex = 6;
+            // 
+            // rtbResultData
+            // 
+            this.rtbResultData.BackColor = System.Drawing.Color.White;
+            this.rtbResultData.Location = new System.Drawing.Point(521, 95);
+            this.rtbResultData.Name = "rtbResultData";
+            this.rtbResultData.ReadOnly = true;
+            this.rtbResultData.Size = new System.Drawing.Size(492, 310);
+            this.rtbResultData.TabIndex = 7;
+            this.rtbResultData.Text = "";
+            // 
+            // timerButton
+            // 
+            this.timerButton.Tick += new System.EventHandler(this.timerButton_Tick);
+            // 
+            // pnlResearch
+            // 
+            this.pnlResearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlResearch.Location = new System.Drawing.Point(1046, 95);
+            this.pnlResearch.Name = "pnlResearch";
+            this.pnlResearch.Size = new System.Drawing.Size(381, 310);
+            this.pnlResearch.TabIndex = 8;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(691, 526);
+            this.ClientSize = new System.Drawing.Size(1439, 449);
+            this.Controls.Add(this.pnlResearch);
+            this.Controls.Add(this.rtbResultData);
             this.Controls.Add(this.pbLoad);
             this.Controls.Add(this.lblResearchNumber);
             this.Controls.Add(this.rtbResult);
@@ -109,6 +138,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Thesaurus - INDEXOR";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -121,6 +151,9 @@
         public System.Windows.Forms.Label lblResearchNumber;
         public System.Windows.Forms.ProgressBar pbLoad;
         public System.Windows.Forms.Button btn_Research;
+        public System.Windows.Forms.RichTextBox rtbResultData;
+        private System.Windows.Forms.Timer timerButton;
+        public System.Windows.Forms.Panel pnlResearch;
     }
 }
 
