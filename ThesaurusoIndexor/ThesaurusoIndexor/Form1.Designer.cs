@@ -58,6 +58,7 @@
             // 
             // cbResearchLocation
             // 
+            this.cbResearchLocation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbResearchLocation.FormattingEnabled = true;
             this.cbResearchLocation.Items.AddRange(new object[] {
             "Tout",
