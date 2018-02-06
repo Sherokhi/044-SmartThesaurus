@@ -99,7 +99,7 @@ namespace ThesaurusoIndexor
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            database.CreateDataBase();
         }
 
         private void timerButton_Tick(object sender, EventArgs e)

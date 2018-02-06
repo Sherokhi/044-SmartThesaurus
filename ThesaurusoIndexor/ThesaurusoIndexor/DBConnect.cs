@@ -11,6 +11,7 @@ using MySql.Data;
 using MySql.Data.MySqlClient;
 using System.Windows.Forms;
 using System.Threading;
+using System.Data;
 
 namespace ThesaurusoIndexor
 {
@@ -39,7 +40,7 @@ namespace ThesaurusoIndexor
         /// <summary>
         /// Mot de passe de l'admin
         /// </summary>
-        private const string _ADMINPASSWORD = "";
+        private const string _ADMINPASSWORD = "root";
 
 
         /// <summary>
@@ -72,12 +73,31 @@ namespace ThesaurusoIndexor
                     "erreur : " + e.Message);
             }
 
+        }
 
+        public void CloseConnection()
+        {
+            if(_Connection.State == ConnectionState.Open)
+            {
+                _Connection.Close();
+            }
+        }
 
-            Thread.Sleep(1000);
-            _Connection.Close();
-
-            MessageBox.Show("Connexion fermé !");
+        /// <summary>
+        /// Execute la requète donnée
+        /// </summary>
+        /// <param name="request"></param>
+        public void getRequest(string request)
+        {
+            MySqlCommand mySqlRequest = new MySqlCommand(request, _Connection);
+            try
+            {
+                mySqlRequest.ExecuteNonQuery();
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
     }

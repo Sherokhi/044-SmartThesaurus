@@ -38,7 +38,6 @@
             this.pbLoad = new System.Windows.Forms.ProgressBar();
             this.rtbResultData = new System.Windows.Forms.RichTextBox();
             this.timerButton = new System.Windows.Forms.Timer(this.components);
-            this.pnlResearch = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // btn_Research
@@ -114,20 +113,11 @@
             // 
             this.timerButton.Tick += new System.EventHandler(this.timerButton_Tick);
             // 
-            // pnlResearch
-            // 
-            this.pnlResearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlResearch.Location = new System.Drawing.Point(1046, 95);
-            this.pnlResearch.Name = "pnlResearch";
-            this.pnlResearch.Size = new System.Drawing.Size(381, 310);
-            this.pnlResearch.TabIndex = 8;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1439, 449);
-            this.Controls.Add(this.pnlResearch);
+            this.ClientSize = new System.Drawing.Size(1026, 449);
             this.Controls.Add(this.rtbResultData);
             this.Controls.Add(this.pbLoad);
             this.Controls.Add(this.lblResearchNumber);
@@ -153,7 +143,6 @@
         public System.Windows.Forms.Button btn_Research;
         public System.Windows.Forms.RichTextBox rtbResultData;
         private System.Windows.Forms.Timer timerButton;
-        public System.Windows.Forms.Panel pnlResearch;
     }
 }
 

@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using System.Windows.Forms;
-using static ThesaurusoIndexor.Program;
-using ThesaurusoIndexor;
 using System.Threading;
 
-namespace algoResearch
+namespace fillDatabase
 {
     public class ResearchK
     {
@@ -19,7 +16,7 @@ namespace algoResearch
 
         public ResearchK()
         {
-            
+
         }
 
         /// <summary>
@@ -37,7 +34,7 @@ namespace algoResearch
         /// <returns></returns>
         public static ResearchK CreateResearch()
         {
-            if(actualResaerch == null)
+            if (actualResaerch == null)
             {
                 actualResaerch = new ResearchK();
             }
@@ -57,10 +54,6 @@ namespace algoResearch
             List<string> lstText = new List<string>();
             //Liste des mots qui contiennent la recherche
             List<string> lstWord = new List<string>();
-
-            form1.rtbResult.Text = "";
-            form1.rtbResultData.Text = "";
-            form1.pbLoad.Value = 0;
             foreach (string str in userSearch)
             {
                 try
@@ -70,9 +63,6 @@ namespace algoResearch
 
                     //Pour les fichiers qui possèdent la contrainte dans leur contenu
                     string[] allFiles = Directory.GetFiles(@"K:\INF\Eleves\temp", "*", SearchOption.AllDirectories);
-
-                    form1.pbLoad.Maximum = files.Count();
-                    form1.btn_Research.Enabled = false;
 
                     allData += "====================================================";
                     allData += "\r\n";
@@ -88,12 +78,6 @@ namespace algoResearch
                         //Thread.Sleep(20);
                         counter++;
                         allData += s + "\r\n";
-                        if(form1.pbLoad.Value < form1.pbLoad.Maximum)
-                        {
-                            form1.pbLoad.Value++;
-                        }
-                        form1.Update();
-                        form1.lblResearchNumber.Text = counter.ToString();
 
                         lstWord.Add(Path.GetFileName(s));
                     }
@@ -121,12 +105,6 @@ namespace algoResearch
 
                                 counter++;
                                 allData2 += s + "\r\n";
-                                if (form1.pbLoad.Value < form1.pbLoad.Maximum)
-                                {
-                                    form1.pbLoad.Value++;
-                                }
-                                form1.Update();
-                                form1.lblResearchNumber.Text = counter.ToString();
                             }
                         }
 
@@ -134,17 +112,11 @@ namespace algoResearch
                         {
 
                         }
-                        if(!lstWord.Contains(Path.GetFileName(s)))
+                        if (!lstWord.Contains(Path.GetFileName(s)))
                         {
                             lstWord.Add(Path.GetFileName(s));
                         }
                     }
-
-                    form1.rtbResult.Text = allData;
-                    form1.rtbResultData.Text = allData2;
-                    form1.Cursor = Cursors.Arrow;
-                    ////Nombre de fichiers trouvés
-                    form1.lblResearchNumber.Text = files.Count().ToString();
                 }
                 catch (UnauthorizedAccessException UAEx)
                 {
@@ -158,7 +130,6 @@ namespace algoResearch
                 {
 
                 }
-                form1.btn_Research.Enabled = true;
 
                 sendData(lstWord);
             }
@@ -179,4 +150,3 @@ namespace algoResearch
         }
     }
 }
-
