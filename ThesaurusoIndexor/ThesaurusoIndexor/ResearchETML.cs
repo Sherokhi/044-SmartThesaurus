@@ -1,33 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Net;
-using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace algoResearch
 {
     class ResearchETML
     {
+        private string[] userSearch;
+        private static ResearchETML actualResearch;
+        private List<string> linkList = new List<string>();
         public ResearchETML()
         {
 
         }
 
-        public string Start(string textToSearch)
-        {
-            string research = "";
-            string[] keyWords = textToSearch.Split(' ');
-            return research;
-        }
 
-        public string getTextinHTML()
+        public static ResearchETML CreateResearch()
         {
-            var html = new WebClient().DownloadString("https://www.etml.ch/vie-de-lecole/menus-du-restaurant.html");
+            if (actualResearch == null)
+            {
+                actualResearch = new ResearchETML();
+            }
+            return actualResearch;
+        }
+       
+
+        public string GetAllData()
+        {
+            string html = "";
+            try
+            {
+                html= new WebClient().DownloadString("https://www.etml.ch/vie-de-lecole/menus-du-restaurant.html");
+            }
+            catch
+            {
+                throw new Exception("");
+            }
             //string htmlTagPattern = "<.*?>";
+            Match links = Regex.Match(html, "<a href=\".* \".*>");
             var regexCss = new Regex("(\\<script(.+?)\\</script\\>)|(\\<style(.+?)\\</style\\>)", RegexOptions.Singleline | RegexOptions.IgnoreCase);
             html = regexCss.Replace(html, string.Empty);
             //html = Regex.Replace(html, htmlTagPattern, string.Empty);
@@ -43,6 +55,10 @@ namespace algoResearch
             html = Encoding.UTF8.GetString(bytes);
             return html;
         }
+
+
+
+
 
 
     }
