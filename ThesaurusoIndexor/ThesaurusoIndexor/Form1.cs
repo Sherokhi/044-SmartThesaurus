@@ -21,8 +21,9 @@ namespace ThesaurusoIndexor
 {
     public partial class Form1 : Form
     {
-        DBConnect database;
+        DBConnect db;
         ResearchK searchK;
+        ResearchETML researchETML;
         public Form1()
         {
             InitializeComponent();
@@ -32,16 +33,17 @@ namespace ThesaurusoIndexor
 
         private void btn_Research_Click(object sender, EventArgs e)
         {
+            //db = new DBConnect();
             switch (cbResearchLocation.SelectedIndex)
             {
                 case 0: //Si la recherche doit chercher partout
 
                     break;
                 case 1: //Si la recherche doit chercher sur etml.ch
-                    ETMLRes(txb_Research.Text);
+                    researchETML = ResearchETML.CreateResearch();
+                    researchETML.GetAllData();
                     break;
                 case 2: //Si la recherche doit chercher sur educanet2.ch
-
                     break;
                 case 3: //Si la recherche doit chercher sur K:\INF\ELEVE\Temp
                     btn_Research.Location = new Point(100000, 100000);

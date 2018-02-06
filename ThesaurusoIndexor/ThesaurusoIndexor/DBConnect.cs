@@ -39,7 +39,7 @@ namespace ThesaurusoIndexor
         /// <summary>
         /// Mot de passe de l'admin
         /// </summary>
-        private const string _ADMINPASSWORD = "";
+        private const string _ADMINPASSWORD = "root";
 
 
         /// <summary>
