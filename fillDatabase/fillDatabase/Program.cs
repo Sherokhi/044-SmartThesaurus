@@ -10,6 +10,8 @@ namespace fillDatabase
     {
         static void Main(string[] args)
         {
+            ResearchK recherche = ResearchK.CreateResearch();
+            recherche.BeginTheReasearch();
         }
     }
 }

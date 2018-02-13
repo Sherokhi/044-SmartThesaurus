@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MySql.Data;
 using MySql.Data.MySqlClient;
 using System.Threading;
 using System.Data;
@@ -58,14 +57,13 @@ namespace fillDatabase
             try
             {
                 _Connection.Open();
-                MessageBox.Show("Connexion établie !");
+                Console.WriteLine("Réussi");
 
             }
             catch (ArgumentException e)
 
             {
-                MessageBox.Show("Connexion refusée !" +
-                    "erreur : " + e.Message);
+                Console.WriteLine("Erreur");
             }
 
         }
@@ -91,7 +89,7 @@ namespace fillDatabase
             }
             catch (MySqlException ex)
             {
-                MessageBox.Show(ex.Message);
+                
             }
 
         }
