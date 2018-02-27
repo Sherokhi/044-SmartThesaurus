@@ -15,6 +15,9 @@ namespace algoResearch
         private Dictionary<string, string> PagesResult = new Dictionary<string, string>();
         string startURL = "https://www.etml.ch/vie-de-lecole/menus-du-restaurant.html";
         string[] links;
+        public List<string> allLinksFinal = new List<string>();
+        List<string> allETMLWords = new List<string>();
+        List<string> pagesChecked = new List<string>();
         public ResearchETML()
         {
 
@@ -52,7 +55,12 @@ namespace algoResearch
             return html;
         }
 
-        public string[] getLinks(string url)
+        /// <summary>
+        /// Recherche tous les liens des pages domaines et les renvoies.
+        /// </summary>
+        /// <param name="url">Page HTML cible</param>
+        /// <returns>tous les liens domaines</returns>
+        public List<string> getLinks(string url)
         {
             string htmlCode = new WebClient().DownloadString(url);
             var linkTags = Regex.Matches(htmlCode, "<a\\s*(.*)>(.*)</a>", RegexOptions.Multiline);
@@ -61,21 +69,29 @@ namespace algoResearch
 
             for (int i = 0; i < links.Length; i++)
             {
-                links[i] = Regex.Replace(Regex.Match(links[i].ToString(), "\\s*href\\s*=\\s*(\"([^\"]*\")|'[^']*'|([^'\">\\s]+))").ToString(),"href=\"", String.Empty);
-                links[i] = Regex.Replace(links[i].ToString(), "\\s",String.Empty);
+                links[i] = Regex.Replace(Regex.Match(links[i].ToString(), "\\s*href\\s*=\\s*(\"([^\"]*\")|'[^']*'|([^'\">\\s]+))").ToString(), "href=\"", String.Empty);
+                links[i] = Regex.Replace(links[i].ToString(), "\\s", String.Empty);
+                links[i] = Regex.Replace(links[i].ToString(), "\"", String.Empty);
             }
-            string[] finalLinks = new string[links.Length];
+
+            List<string> finalLinks = new List<string>();
             string[] allLinks = new string[links.Length];
+
             for (int i = 0; i < links.Length; i++)
             {
                 allLinks[i] = links[i].ToString();
             }
+
             int nbrEtmlLinks = 0;
-            foreach(string link in allLinks)
+            foreach (string link in allLinks)
             {
-                if(link[0] == '/' && link.Length > 2)
+                if (link[0] == '/' && link.Length > 2)
                 {
-                    finalLinks[nbrEtmlLinks] = link;
+                    finalLinks.Add(link);
+                    if (IsNotIn(allLinksFinal, link))
+                    {
+                        allLinksFinal.Add(link);
+                    }
                     nbrEtmlLinks++;
                 }
             }
@@ -83,6 +99,33 @@ namespace algoResearch
             return finalLinks;
         }
 
+        public bool IsNotIn(List<string> list, string elementToCheck)
+        {
+            return !list.Contains(elementToCheck);
+        }
 
+        public void RecoverAllWords(string url)
+        {
+            foreach (string word in getTextinHTML(url).Split())
+            {
+                if (IsNotIn(allETMLWords, word))
+                {
+                    allETMLWords.Add(word);
+                    Console.WriteLine(word);
+                }
+            }
+
+            pagesChecked.Add(url);
+            Console.WriteLine(url);
+
+            foreach (string link in getLinks(url))
+            {
+                if (IsNotIn(pagesChecked, link))
+                {
+                    Console.WriteLine(link);
+                    RecoverAllWords("https://www.etml.ch" + link);
+                }
+            }
+        }
     }
 }
