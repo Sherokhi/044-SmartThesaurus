@@ -40,8 +40,8 @@ namespace ThesaurusoIndexor
 
                     break;
                 case 1: //Si la recherche doit chercher sur etml.ch
-                    researchETML = ResearchETML.CreateResearch();
-                    researchETML.GetAllData();
+                    //researchETML = ResearchETML.CreateResearch();
+                    //researchETML.GetAllData();
                     break;
                 case 2: //Si la recherche doit chercher sur educanet2.ch
                     break;
@@ -101,13 +101,19 @@ namespace ThesaurusoIndexor
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            database.CreateDataBase();
+            //database.CreateDataBase();
         }
 
         private void timerButton_Tick(object sender, EventArgs e)
         {
             btn_Research.Location = new Point( 884, 9);
             timerButton.Enabled = false;
+        }
+
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+            FillK recherche = FillK.CreateResearch();
+            recherche.BeginTheReasearch();
         }
     }
 }

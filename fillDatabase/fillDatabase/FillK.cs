@@ -10,10 +10,10 @@ using System.Text.RegularExpressions;
 
 namespace fillDatabase
 {
-    public class ResearchK
+    public class FillK
     {
         private string[] userSearch;
-        private static ResearchK actualResaerch;
+        private static FillK actualResaerch;
         private dbConnect dbd = new dbConnect();
         string text = "";
 
@@ -21,7 +21,7 @@ namespace fillDatabase
         PdfDocument document;
 
 
-        private ResearchK()
+        private FillK()
         {
 
         }
@@ -30,11 +30,11 @@ namespace fillDatabase
         /// Création singleton, instance de classe
         /// </summary>
         /// <returns></returns>
-        public static ResearchK CreateResearch()
+        public static FillK CreateResearch()
         {
             if (actualResaerch == null)
             {
-                actualResaerch = new ResearchK();
+                actualResaerch = new FillK();
             }
             return actualResaerch;
         }

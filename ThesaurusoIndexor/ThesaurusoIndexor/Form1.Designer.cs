@@ -38,6 +38,7 @@
             this.pbLoad = new System.Windows.Forms.ProgressBar();
             this.rtbResultData = new System.Windows.Forms.RichTextBox();
             this.timerButton = new System.Windows.Forms.Timer(this.components);
+            this.btnLoad = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btn_Research
@@ -113,11 +114,22 @@
             // 
             this.timerButton.Tick += new System.EventHandler(this.timerButton_Tick);
             // 
+            // btnLoad
+            // 
+            this.btnLoad.Location = new System.Drawing.Point(13, 414);
+            this.btnLoad.Name = "btnLoad";
+            this.btnLoad.Size = new System.Drawing.Size(1000, 23);
+            this.btnLoad.TabIndex = 8;
+            this.btnLoad.Text = "Charger la base de données";
+            this.btnLoad.UseVisualStyleBackColor = true;
+            this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1026, 449);
+            this.Controls.Add(this.btnLoad);
             this.Controls.Add(this.rtbResultData);
             this.Controls.Add(this.pbLoad);
             this.Controls.Add(this.lblResearchNumber);
@@ -143,6 +155,7 @@
         public System.Windows.Forms.Button btn_Research;
         public System.Windows.Forms.RichTextBox rtbResultData;
         private System.Windows.Forms.Timer timerButton;
+        private System.Windows.Forms.Button btnLoad;
     }
 }
 
