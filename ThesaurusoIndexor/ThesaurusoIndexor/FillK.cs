@@ -12,10 +12,8 @@ namespace ThesaurusoIndexor
 {
     public class FillK
     {
-        private string[] userSearch;
         private static FillK actualResaerch;
         private DBConnect dbd = new DBConnect();
-        string text = "";
 
         // Create a reader for the given PDF file
         PdfDocument document;
@@ -45,24 +43,25 @@ namespace ThesaurusoIndexor
         public void BeginTheReasearch()
         {
             //Liste des mots qui contiennent la recherche
-            List<string> lstWord = new List<string>();
+            Dictionary<string, bool> lstWord = new Dictionary<string, bool>();
+
             string[] allWords;
 
             try
             {
                 //Pour les fichiers qui contiennent la contrainte dans leur chemin
-                string[] files = Directory.GetFiles(@"K:\INF\Eleves\temp\fichier", "*", SearchOption.AllDirectories);
+                string[] files = Directory.GetFiles(@"K:\INF\Eleves\temp", "*", SearchOption.AllDirectories);
 
                 //Pour les fichiers qui possèdent la contrainte dans leur contenu pdf
-                string[] filePdf = Directory.GetFiles(@"K:\INF\Eleves\temp\fichier", "*" + ".pdf", SearchOption.AllDirectories);
+                string[] filePdf = Directory.GetFiles(@"K:\INF\Eleves\temp", "*" + ".pdf", SearchOption.AllDirectories);
 
                 //Pour les fichiers qui possèdent la contrainte dans leur contenu txt
-                string[] fileTxt = Directory.GetFiles(@"K:\INF\Eleves\temp\fichier", "*" + ".txt", SearchOption.AllDirectories);
+                string[] fileTxt = Directory.GetFiles(@"K:\INF\Eleves\temp", "*" + ".txt", SearchOption.AllDirectories);
 
                 //Pour les noms de fichiers
                 foreach (string s in files)
                 {
-                    lstWord.Add(System.IO.Path.GetFileName(s));
+                    lstWord.Add(System.IO.Path.GetFileName(s), true);
                 }
 
                 //Pour les fichiers txt qui contiennent la contrainte dans leur contenu
@@ -74,7 +73,7 @@ namespace ThesaurusoIndexor
                     {
                         if (word != "" && word.Length > 1 && Regex.IsMatch(word, "[A-Za-z0-9@àäéöèüêçï&]+"))
                         {
-                            lstWord.Add(word);
+                            lstWord.Add(word,false);
                         }
                     }
 
@@ -95,7 +94,7 @@ namespace ThesaurusoIndexor
                     {
                         if(word != "" && word.Length > 1 && Regex.IsMatch(word, "[A-Za-z0-9@àäéöèüêçï&]+"))
                         {
-                            lstWord.Add(word);
+                            lstWord.Add(word, false);
                         }
                     }
 
@@ -128,12 +127,12 @@ namespace ThesaurusoIndexor
         /// Envoie les mots trouvés
         /// </summary>
         /// <param name="words"></param>
-        private void sendData(List<string> words)
+        private void sendData(Dictionary<string, bool> words)
         {
             dbd.getRequest("DELETE FROM `t_mots`;");
-            foreach (string word in words)
+            foreach (KeyValuePair<string, bool> word in words)
             {
-                string theRequest = "INSERT INTO t_mots VALUES (NULL,'" + word + "');";
+                string theRequest = "INSERT INTO t_mots VALUES (NULL,'" + word.Key + "', '" + word.Value + "');";
                 dbd.getRequest(theRequest);
             }
         }
