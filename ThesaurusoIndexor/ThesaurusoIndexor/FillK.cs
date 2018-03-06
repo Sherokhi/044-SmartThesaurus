@@ -1,8 +1,9 @@
-﻿using System;
+﻿///ETML
+///Auteur : Loic Rosset
+///Date : 13.02.2018
+///Description : Remplit la base de données par rapport au k
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
@@ -12,8 +13,12 @@ namespace ThesaurusoIndexor
 {
     public class FillK
     {
+        //Singleton
         private static FillK actualResaerch;
+        //Connexion à la base de données
         private DBConnect dbd = new DBConnect();
+
+        //
 
         // Create a reader for the given PDF file
         PdfDocument document;
@@ -43,7 +48,7 @@ namespace ThesaurusoIndexor
         public void BeginTheReasearch()
         {
             //Liste des mots qui contiennent la recherche
-            Dictionary<string, bool> lstWord = new Dictionary<string, bool>();
+            Dictionary<string, int> lstWord = new Dictionary<string, int>();
 
             string[] allWords;
 
@@ -61,7 +66,10 @@ namespace ThesaurusoIndexor
                 //Pour les noms de fichiers
                 foreach (string s in files)
                 {
-                    lstWord.Add(System.IO.Path.GetFileName(s), true);
+                    if (!lstWord.ContainsKey(System.IO.Path.GetFileName(s)))
+                    {
+                        lstWord.Add(System.IO.Path.GetFileName(s), 1);
+                    }
                 }
 
                 //Pour les fichiers txt qui contiennent la contrainte dans leur contenu
@@ -73,7 +81,10 @@ namespace ThesaurusoIndexor
                     {
                         if (word != "" && word.Length > 1 && Regex.IsMatch(word, "[A-Za-z0-9@àäéöèüêçï&]+"))
                         {
-                            lstWord.Add(word,false);
+                            if (!lstWord.ContainsKey(word))
+                            {
+                                lstWord.Add(word, 0);
+                            }
                         }
                     }
 
@@ -92,18 +103,14 @@ namespace ThesaurusoIndexor
                     allWords = text.Split(' ');
                     foreach(string word in allWords)
                     {
-                        if(word != "" && word.Length > 1 && Regex.IsMatch(word, "[A-Za-z0-9@àäéöèüêçï&]+"))
+                        if(word != "" && word.Length > 1 && Regex.IsMatch(word, "^[A-Za-z0-9@àäéöèüêçï&]+$"))
                         {
-                            lstWord.Add(word, false);
+                            if (!lstWord.ContainsKey(word))
+                            {
+                                lstWord.Add(word, 0);
+                            }
                         }
                     }
-
-                }
-
-                //Pour les fichiers qui contiennent la contrainte dans leur contenu
-                foreach (string s in fileTxt)
-                {
-                    
 
                 }
             }
@@ -127,10 +134,10 @@ namespace ThesaurusoIndexor
         /// Envoie les mots trouvés
         /// </summary>
         /// <param name="words"></param>
-        private void sendData(Dictionary<string, bool> words)
+        private void sendData(Dictionary<string, int> words)
         {
             dbd.getRequest("DELETE FROM `t_mots`;");
-            foreach (KeyValuePair<string, bool> word in words)
+            foreach (KeyValuePair<string, int> word in words)
             {
                 string theRequest = "INSERT INTO t_mots VALUES (NULL,'" + word.Key + "', '" + word.Value + "');";
                 dbd.getRequest(theRequest);

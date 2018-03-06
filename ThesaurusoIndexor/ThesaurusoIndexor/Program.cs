@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿///ETML
+///Auteur : Jérémie Perret
+///Date : 16.01.2018
+///Description : Classe de connection et de gestion SQL
+using System;
 using System.Windows.Forms;
 
 namespace ThesaurusoIndexor

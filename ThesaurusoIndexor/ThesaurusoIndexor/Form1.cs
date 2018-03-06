@@ -3,26 +3,17 @@
 ///Date : 16.01.2018
 ///Description : Classe pour le WinForm
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using MySql.Data;
-using MySql.Data.MySqlClient;
 using System.Net;
 using algoResearch;
-using System.Threading;
 
 namespace ThesaurusoIndexor
 {
     public partial class Form1 : Form
     {
         DBConnect db;
-        ResearchK searchK;
+        ResearchDatabase searchK;
         ResearchETML researchETML;
         public Form1()
         {
@@ -50,7 +41,7 @@ namespace ThesaurusoIndexor
                     timerButton.Enabled = true;
 
                     Cursor = Cursors.WaitCursor;
-                    searchK = ResearchK.CreateResearch();
+                    searchK = ResearchDatabase.CreateResearch();
                     searchK.GetResearch(txb_Research.Text);
                     searchK.BeginTheReasearch();
 

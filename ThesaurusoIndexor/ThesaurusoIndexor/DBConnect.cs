@@ -4,14 +4,8 @@
 ///Date : 16.01.2018
 ///Description : Classe de connection et de gestion SQL
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MySql.Data;
 using MySql.Data.MySqlClient;
 using System.Windows.Forms;
-using System.Threading;
 using System.Data;
 
 namespace ThesaurusoIndexor
@@ -57,10 +51,12 @@ namespace ThesaurusoIndexor
         /// </summary>
         public void ConnectionSQL()
         {
+            //String de connexion à la base de données
             string _ConnectionString = "Database=" + _DATABASENAME + ";Data Source=" + _SOURCE + ";User Id=" + _ADMINSUSER + ";Password=" + _ADMINPASSWORD;
 
             _Connection.ConnectionString = _ConnectionString;
 
+            //On essaie d'ouvrir la connexion
             try
             {
                 _Connection.Open();
@@ -90,15 +86,37 @@ namespace ThesaurusoIndexor
         /// <param name="request"></param>
         public void getRequest(string request)
         {
+            //Commande mysql
             MySqlCommand mySqlRequest = new MySqlCommand(request, _Connection);
-            try
+            //Essai de lancer la requête
+            mySqlRequest.ExecuteNonQuery();
+
+        }
+
+        /// <summary>
+        /// Execute la requète et renvoi un tableau de string
+        /// </summary>
+        /// <param name="request"></param>
+        public string[] sendRequest(string request, int colonne)
+        {
+            //Commande mysql
+            MySqlCommand mySqlRequest = new MySqlCommand(request, _Connection);
+            //Datareader qui permet de faire un select
+            MySqlDataReader dataReader = mySqlRequest.ExecuteReader();
+            //Comptteur pour le tableau
+            int compteur = 0;
+            //Tableau de string qui va contenir les mots
+            string[] tabString = new string[dataReader.FieldCount];
+            //Tant qu'on peut lire le reader
+            while (dataReader.Read())
             {
-                mySqlRequest.ExecuteNonQuery();
+                //Sélectionne motcontenu
+                tabString[compteur] = dataReader.GetString(colonne);
+                compteur++;
             }
-            catch (MySqlException ex)
-            {
-                //MessageBox.Show(ex.Message);
-            }
+            dataReader.Close();
+
+            return tabString;
 
         }
 
