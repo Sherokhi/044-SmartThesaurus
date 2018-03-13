@@ -18,7 +18,8 @@ namespace ThesaurusoIndexor
         //Connexion à la base de données
         private DBConnect dbd = new DBConnect();
 
-        //
+        //Liste des fichiers
+        List<File> lstFile = new List<File>();
 
         // Create a reader for the given PDF file
         PdfDocument document;
@@ -45,7 +46,7 @@ namespace ThesaurusoIndexor
         /// <summary>
         /// Lance la recherche sur le K
         /// </summary>
-        public void BeginTheReasearch()
+        public void BeginTheReasearchWord()
         {
             //Liste des mots qui contiennent la recherche
             Dictionary<string, int> lstWord = new Dictionary<string, int>();
