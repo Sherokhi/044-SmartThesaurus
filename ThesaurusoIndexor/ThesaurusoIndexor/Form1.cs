@@ -43,7 +43,7 @@ namespace ThesaurusoIndexor
                     Cursor = Cursors.WaitCursor;
                     searchK = ResearchDatabase.CreateResearch();
                     searchK.GetResearch(txb_Research.Text);
-                    searchK.BeginTheReasearch();
+                    searchK.BeginTheReasearchWord();
 
                     break;
             }

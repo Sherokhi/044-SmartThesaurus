@@ -120,7 +120,7 @@
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(1000, 23);
             this.btnLoad.TabIndex = 8;
-            this.btnLoad.Text = "Charger la base de données";
+            this.btnLoad.Text = "Synchroniser";
             this.btnLoad.UseVisualStyleBackColor = true;
             this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
             // 

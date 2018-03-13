@@ -33,3 +33,16 @@ C:\Users\rossetlo\Desktop\P_OO2\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\Th
 C:\Users\rossetlo\Desktop\P_OO2\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.pdb
 C:\Users\rossetlo\Desktop\P_OO2\ThesaurusoIndexor\ThesaurusoIndexor\bin\Debug\itextsharp.dll
 C:\Users\rossetlo\Desktop\P_OO2\ThesaurusoIndexor\ThesaurusoIndexor\bin\Debug\itextsharp.xml
+C:\Users\rossetlo\Desktop\P_OO\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.csprojResolveAssemblyReference.cache
+C:\Users\rossetlo\Desktop\P_OO\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.Form1.resources
+C:\Users\rossetlo\Desktop\P_OO\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.Properties.Resources.resources
+C:\Users\rossetlo\Desktop\P_OO\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.csproj.GenerateResource.Cache
+C:\Users\rossetlo\Desktop\P_OO\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.exe
+C:\Users\rossetlo\Desktop\P_OO\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.pdb
+C:\Users\rossetlo\Desktop\P_OO\ThesaurusoIndexor\ThesaurusoIndexor\bin\Debug\ThesaurusoIndexor.exe.config
+C:\Users\rossetlo\Desktop\P_OO\ThesaurusoIndexor\ThesaurusoIndexor\bin\Debug\ThesaurusoIndexor.exe
+C:\Users\rossetlo\Desktop\P_OO\ThesaurusoIndexor\ThesaurusoIndexor\bin\Debug\ThesaurusoIndexor.pdb
+C:\Users\rossetlo\Desktop\P_OO\ThesaurusoIndexor\ThesaurusoIndexor\bin\Debug\itextsharp.dll
+C:\Users\rossetlo\Desktop\P_OO\ThesaurusoIndexor\ThesaurusoIndexor\bin\Debug\MySql.Data.dll
+C:\Users\rossetlo\Desktop\P_OO\ThesaurusoIndexor\ThesaurusoIndexor\bin\Debug\itextsharp.xml
+C:\Users\rossetlo\Desktop\P_OO\ThesaurusoIndexor\ThesaurusoIndexor\bin\Debug\MySql.Data.xml
