@@ -49,13 +49,21 @@ namespace algoResearch
         List<string> pagesChecked = new List<string>();
 
         /// <summary>
+        /// Liste contenant les pages avec des pdf
+        /// </summary>
+        List<string> pdfETML = new List<string>();
+
+        Random r = new Random();
+        ConsoleColor actualColor = new ConsoleColor();
+        ConsoleColor lastColor = new ConsoleColor();
+
+        /// <summary>
         /// Constructeur de classe
         /// </summary>
         public ResearchETML()
         {
 
         }
-
 
         /// <summary>
         /// Retourne l'instanc de classe
@@ -69,6 +77,7 @@ namespace algoResearch
             }
             return instance;
         }
+
         /// <summary>
         /// Démarre l'algorythme de recherche
         /// </summary>
@@ -76,9 +85,7 @@ namespace algoResearch
         /// <returns></returns>
         public string Start(string textToSearch)
         {
-            string research = String.Empty;
-            string[] keyWords = textToSearch.Split(' ');
-            return research;
+            return string.Empty;
         }
 
         /// <summary>
@@ -91,31 +98,36 @@ namespace algoResearch
             var html = "";
             try
             {
+                //Téléchargement du code source de la page html
                 html = new WebClient().DownloadString(url);
-                //string htmlTagPattern = "<.*?>";
+
+                //Regex pour détecter les balises script et style avec leur contenu
                 var regexCss = new Regex("(\\<script(.+?)\\</script\\>)|(\\<style(.+?)\\</style\\>)", RegexOptions.Singleline | RegexOptions.IgnoreCase);
                 html = regexCss.Replace(html, string.Empty);
-                //html = Regex.Replace(html, htmlTagPattern, string.Empty);
-                //html = Regex.Replace(html, @"^\s+$[\r\n]*", String.Empty, RegexOptions.Multiline);
-                html = html.Replace("&nbsp;", string.Empty);
+
                 Regex regEx = new Regex("<[^>]*>", RegexOptions.IgnoreCase);
                 html = regEx.Replace(html, String.Empty);
-                //html = Regex.Replace(html, @"(\<!--\s*.*?((--\>)|$))", String.Empty);
+
                 html = Regex.Replace(html, @"\n", String.Empty);
                 html = Regex.Replace(html, @"\r", " ");
                 html = Regex.Replace(html, @"\t", " ");
-                //html = Regex.Replace(html, @"&copy;", String.Empty);
-                //\s*href\s *=\s*(\"([^"]*\")|'[^']*'|([^'">\s]+))
-                //<a([^>]?)>(.?)<\/a>
+
+                //Suppression des balises commentaires
                 html = Regex.Replace(html, @"^((\<!--\s*.*?((--\>)|$))|\\n|<.*?>)", String.Empty);
+
+                //Conversion en bytes du texte ainsi obtenu
                 byte[] bytes = Encoding.Default.GetBytes(html);
+
+                //reconversion en UTF-8
                 html = Encoding.UTF8.GetString(bytes);
+
+                //Suppression des espaces en trop
                 html = Regex.Replace(html, @"[ ]{2,}", " ");
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                Thread.Sleep(10000);
+                //Console.WriteLine(e);
+                //Thread.Sleep(10000);
             }
             return html;
         }
@@ -139,6 +151,7 @@ namespace algoResearch
                 object[] links = new object[linkTags.Count];
                 linkTags.CopyTo(links, 0);
 
+                //Récupération des liens avec le bon format
                 for (int i = 0; i < links.Length; i++)
                 {
                     links[i] = Regex.Replace(Regex.Match(links[i].ToString(), "\\s*href\\s*=\\s*(\"([^\"]*\")|'[^']*'|([^'\">\\s]+))").ToString(), "href=\"", String.Empty);
@@ -146,32 +159,51 @@ namespace algoResearch
                     links[i] = Regex.Replace(links[i].ToString(), "\"", String.Empty);
                 }
 
-
+                //Nouveau tableau qui va contenir tout les liens de cette pages
                 string[] allLinks = new string[links.Length];
 
+                //Remplissae de ce tableau
                 for (int i = 0; i < links.Length; i++)
                 {
                     allLinks[i] = links[i].ToString();
                 }
 
+                //Nombre de liens 
                 int nbrEtmlLinks = 0;
+
                 foreach (string link in allLinks)
                 {
-                    if (link[0] == '/' && link.Length > 2)
+                    //Si le lien continue sur le même domaine
+                    if(link[0] == '/' && link.Length > 2)
                     {
-                        finalLinks.Add(link);
-                        if (IsNotIn(allLinksFinal, link))
+                        //Si le lien contient ".pdf"
+                        if (link.Contains(".pdf"))
                         {
-                            allLinksFinal.Add(link);
+                            pdfETML.Add(link);
                         }
-                        nbrEtmlLinks++;
+                        else
+                        {
+                            //Si c'est un lien qui n'est pas une image 
+                            if (!link.Contains(".img"))
+                            {
+                                //Ajout à la liste des liens trouvé sur la page
+                                finalLinks.Add(link);
+
+                                //Si lien pas dans la liste --> ajout
+                                if (IsNotIn(allLinksFinal, link))
+                                {
+                                    allLinksFinal.Add(link);
+                                }
+                                nbrEtmlLinks++;
+                            }
+                        }
                     }
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                Thread.Sleep(10000);
+                //Console.WriteLine(e);
+                //Thread.Sleep(1000);
             }
             return finalLinks;
         }
@@ -194,28 +226,36 @@ namespace algoResearch
         public void RecoverAllWords(string url)
         {
             string newURL = "";
+            while (actualColor == lastColor || actualColor == ConsoleColor.Black)
+            {
+                actualColor = (ConsoleColor)(r.Next(15));
+            }
+            lastColor = actualColor;
+            Console.ForegroundColor = actualColor;
+            Console.WriteLine(newURL + "> start\nNouveaux mots trouvés :");
+            //Pour chaque mots trouvé sur la page
             foreach (string word in getTextinHTML(url).Split(' '))
             {
+                //Si le mot n'est pas dans la liste --> ajout
                 if (IsNotIn(allETMLWords, word))
                 {
                     allETMLWords.Add(word);
+
+                    //Output console
                     Console.WriteLine(word);
                 }
             }
 
-            if(url == "https://www.etml.ch")
-            {
-                //url += "/index.php";
-            }
+
             if (url.Contains("https://www.etml.ch"))
             {
-                newURL =url.Remove(0, 19);
+                newURL = url.Remove(0, 19);
             }
             if (newURL != "")
             {
                 pagesChecked.Add(newURL);
+                Console.WriteLine(newURL + "> end");
             }
-            Console.WriteLine(newURL);
 
             foreach (string link in getLinks(url))
             {
@@ -224,6 +264,60 @@ namespace algoResearch
                     Console.WriteLine(link);
                     RecoverAllWords("https://www.etml.ch" + link);
                 }
+            }
+        }
+
+
+        private bool RemoteFileExists(string url)
+        {
+            try
+            {
+                HttpWebRequest request = HttpWebRequest.Create(url) as HttpWebRequest;
+                request.Timeout = 5000; //set the timeout to 5 seconds to keep the user from waiting too long for the page to load
+                request.Method = "HEAD"; //Get only the header information -- no need to download any content
+
+                HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+
+                int statusCode = (int)response.StatusCode;
+                if (statusCode >= 100 && statusCode < 400) //Good requests
+                {
+                    return true;
+                }
+                else if (statusCode >= 500 && statusCode <= 510) //Server Errors
+                {
+                    return false;
+                }
+            }
+            catch (WebException ex)
+            {
+                if (ex.Status == WebExceptionStatus.ProtocolError) //400 errors
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return false;
+        }
+
+        public void PrintAllWords()
+        {
+            Console.Clear();
+            Console.WriteLine("Mots trouvés sur le site de l'ETML :");
+            foreach (string word in allETMLWords)
+            {
+                Console.WriteLine(word);
+            }
+        }
+
+        public void ReadAllPDF()
+        {
+            foreach(string fileLink in pdfETML)
+            {
+                WebClient wc = new WebClient();
+                wc.DownloadFile("https://www.etml.ch" + fileLink, fileLink.Split('/')[fileLink.Split('/').Length - 1]);
             }
         }
 
