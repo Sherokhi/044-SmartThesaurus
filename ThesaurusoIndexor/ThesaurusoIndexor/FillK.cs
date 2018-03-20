@@ -18,14 +18,11 @@ namespace ThesaurusoIndexor
         //Connexion à la base de données
         private DBConnect dbd = new DBConnect();
 
-        //Liste des fichiers
-        List<File> lstFile = new List<File>();
+        //
 
         // Create a reader for the given PDF file
         PdfDocument document;
 
-        //Taille d'un mot
-        const int MAX_SIZE_WORLD = 40;
 
         private FillK()
         {
