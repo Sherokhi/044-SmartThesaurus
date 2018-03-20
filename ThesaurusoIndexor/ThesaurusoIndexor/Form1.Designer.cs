@@ -137,6 +137,7 @@
             this.Controls.Add(this.cbResearchLocation);
             this.Controls.Add(this.txb_Research);
             this.Controls.Add(this.btn_Research);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Thesaurus - INDEXOR";

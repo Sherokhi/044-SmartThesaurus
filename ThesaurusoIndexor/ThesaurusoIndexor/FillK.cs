@@ -58,13 +58,13 @@ namespace ThesaurusoIndexor
             try
             {
                 //Pour les fichiers qui contiennent la contrainte dans leur chemin
-                string[] files = Directory.GetFiles(@"K:\INF\Eleves\temp\lol", "*", SearchOption.AllDirectories);
+                string[] files = Directory.GetFiles(@"D:\DATA\fichier", "*", SearchOption.AllDirectories);
 
                 //Pour les fichiers qui possèdent la contrainte dans leur contenu pdf
-                string[] filePdf = Directory.GetFiles(@"K:\INF\Eleves\temp\lol", "*" + ".pdf", SearchOption.AllDirectories);
+                string[] filePdf = Directory.GetFiles(@"D:\DATA\fichier", "*" + ".pdf", SearchOption.AllDirectories);
 
                 //Pour les fichiers qui possèdent la contrainte dans leur contenu txt
-                string[] fileTxt = Directory.GetFiles(@"K:\INF\Eleves\temp\lol", "*" + ".txt", SearchOption.AllDirectories);
+                string[] fileTxt = Directory.GetFiles(@"D:\DATA\fichier", " *" + ".txt", SearchOption.AllDirectories);
 
                 //Pour les noms de fichiers
                 foreach (string s in files)

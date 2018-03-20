@@ -71,103 +71,88 @@ namespace ThesaurusoIndexor
             form1.pbLoad.Value = 0;
             foreach (string str in userSearch)
             {
-                try
+                //Requète pour ceux qui le possède dans leur contenu
+                string theRequest = "SELECT * FROM t_mots INNER JOIN t_occurencefolder WHERE t_mots.motID = t_occurencefolder.motID AND t_mots.motIsTitle = false;";
+                //On récupère le contenu du mot
+                string[] files = dbd.sendRequest(theRequest, 1);
+
+                //Requète pour ceux qui le possède dans leur nom de fichier
+                string theRequest2 = "SELECT * FROM t_mots INNER JOIN t_occurencefolder WHERE t_mots.motID = t_occurencefolder.motID AND t_mots.motIsTitle = true;";
+                //On récupère aussi le bool qui dit si c'est un nom de fichiers
+                string[] filesTitle = dbd.sendRequest(theRequest2, 1);
+
+                form1.pbLoad.Maximum = files.Count();
+                form1.btn_Research.Enabled = false;
+
+                allData += "====================================================";
+                allData += "\r\n";
+                allData += "Fichiers qui possèdent la recherche uniquement dans leur chemin";
+                allData += "\r\n";
+                allData += "====================================================";
+                allData += "\r\n";
+
+                //Pour les noms de fichiers
+                foreach (string s in filesTitle)
                 {
-                    //Requète pour ceux qui le possède dans leur contenu
-                    string theRequest = "SELECT * FROM t_mots INNER JOIN t_occurencefolder WHERE t_mots.motID = t_occurencefolder.motID AND t_mots.motIsTitle = false;";
-                    //On récupère le contenu du mot
-                    string[] files = dbd.sendRequest(theRequest, 1);
-
-                    //Requète pour ceux qui le possède dans leur nom de fichier
-                    string theRequest2 = "SELECT * FROM t_mots INNER JOIN t_occurencefolder WHERE t_mots.motID = t_occurencefolder.motID AND t_mots.motIsTitle = true;";
-                    //On récupère aussi le bool qui dit si c'est un nom de fichiers
-                    string[] filesTitle = dbd.sendRequest(theRequest2, 1);
-
-                    form1.pbLoad.Maximum = files.Count();
-                    form1.btn_Research.Enabled = false;
-
-                    allData += "====================================================";
-                    allData += "\r\n";
-                    allData += "Fichiers qui possèdent la recherche uniquement dans leur chemin";
-                    allData += "\r\n";
-                    allData += "====================================================";
-                    allData += "\r\n";
-
-                    //Pour les noms de fichiers
-                    foreach (string s in filesTitle)
+                    counter++;
+                    allData += s + "\r\n";
+                    if (form1.pbLoad.Value < form1.pbLoad.Maximum)
                     {
-                        counter++;
-                        allData += s + "\r\n";
-                        if (form1.pbLoad.Value < form1.pbLoad.Maximum)
-                        {
-                            form1.pbLoad.Value++;
-                        }
-                        form1.Update();
-                        form1.lblResearchNumber.Text = counter.ToString();
+                        form1.pbLoad.Value++;
+                    }
+                    form1.Update();
+                    form1.lblResearchNumber.Text = counter.ToString();
 
+                    lstWord.Add(Path.GetFileName(s));
+                }
+
+                //Pour les fichiers qui contiennent la contrainte dans leur contenu
+                allData2 += "====================================================";
+                allData2 += "\r\n";
+                allData2 += "Fichiers qui possèdent la recherche uniquement dans leur contenu";
+                allData2 += "\r\n";
+                allData2 += "====================================================";
+                allData2 += "\r\n";
+
+                foreach (string s in files)
+                {
+                    try
+                    {
+                        text = System.IO.File.ReadAllText(s);
+                        //Prend tous les fichiers qui possèdent le string dans leur contenu
+                        if (text.Contains(str))
+                        {
+                            //Contient le lien du fichier
+                            lstHaveText.Add(s);
+                            //Contient le contenu du fichier
+                            lstText.Add(text);
+
+                            counter++;
+                            allData2 += s + "\r\n";
+                            if (form1.pbLoad.Value < form1.pbLoad.Maximum)
+                            {
+                                form1.pbLoad.Value++;
+                            }
+                            form1.Update();
+                            form1.lblResearchNumber.Text = counter.ToString();
+                        }
+                    }
+
+                    catch
+                    {
+
+                    }
+                    if (!lstWord.Contains(Path.GetFileName(s)))
+                    {
                         lstWord.Add(Path.GetFileName(s));
                     }
-
-                    //Pour les fichiers qui contiennent la contrainte dans leur contenu
-                    allData2 += "====================================================";
-                    allData2 += "\r\n";
-                    allData2 += "Fichiers qui possèdent la recherche uniquement dans leur contenu";
-                    allData2 += "\r\n";
-                    allData2 += "====================================================";
-                    allData2 += "\r\n";
-
-                    foreach (string s in files)
-                    {
-                        try
-                        {
-                            text = System.IO.File.ReadAllText(s);
-                            //Prend tous les fichiers qui possèdent le string dans leur contenu
-                            if (text.Contains(str))
-                            {
-                                //Contient le lien du fichier
-                                lstHaveText.Add(s);
-                                //Contient le contenu du fichier
-                                lstText.Add(text);
-
-                                counter++;
-                                allData2 += s + "\r\n";
-                                if (form1.pbLoad.Value < form1.pbLoad.Maximum)
-                                {
-                                    form1.pbLoad.Value++;
-                                }
-                                form1.Update();
-                                form1.lblResearchNumber.Text = counter.ToString();
-                            }
-                        }
-
-                        catch
-                        {
-
-                        }
-                        if (!lstWord.Contains(Path.GetFileName(s)))
-                        {
-                            lstWord.Add(Path.GetFileName(s));
-                        }
-                    }
-
-                    form1.rtbResult.Text = allData;
-                    form1.rtbResultData.Text = allData2;
-                    form1.Cursor = Cursors.Arrow;
-                    ////Nombre de fichiers trouvés
-                    form1.lblResearchNumber.Text = files.Count().ToString();
                 }
-                catch (UnauthorizedAccessException UAEx)
-                {
-                    MessageBox.Show(UAEx.Message);
-                }
-                catch (PathTooLongException PathEx)
-                {
-                    MessageBox.Show(PathEx.Message);
-                }
-                catch
-                {
 
-                }
+                form1.rtbResult.Text = allData;
+                form1.rtbResultData.Text = allData2;
+                form1.Cursor = Cursors.Arrow;
+                ////Nombre de fichiers trouvés
+                form1.lblResearchNumber.Text = files.Count().ToString();
                 form1.btn_Research.Enabled = true;
             }
         }
