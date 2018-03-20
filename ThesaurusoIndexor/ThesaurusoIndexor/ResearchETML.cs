@@ -1,52 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Net;
-using System.IO;
 using System.Text.RegularExpressions;
-using System.Threading;
 
 namespace algoResearch
 {
     class ResearchETML
     {
-        /// <summary>
-        /// Dictionnaire pour le résultat des pages
-        /// </summary>
         private Dictionary<string, string> PagesResult = new Dictionary<string, string>();
-
-        /// <summary>
-        /// URL de 
-        /// </summary>
         string startURL = "https://www.etml.ch/vie-de-lecole/menus-du-restaurant.html";
-
-        /// <summary>
-        /// instance de classe pour le singleton
-        /// </summary>
-        private static ResearchETML instance;
-
-        /// <summary>
-        /// Tableau des liens récupérés sur une page html
-        /// </summary>
         string[] links;
-
-        /// <summary>
-        /// Liste de tous les liens présents sur un site, toute pages confondues
-        /// </summary>
         public List<string> allLinksFinal = new List<string>();
-
-        /// <summary>
-        /// Tous les mots contenu sur le site de l'ETML, toutes pages confondues
-        /// </summary>
         List<string> allETMLWords = new List<string>();
-
-        /// <summary>
-        /// Listes des pages analysées durant le processus de recherche
-        /// </summary>
         List<string> pagesChecked = new List<string>();
+<<<<<<< HEAD
 
         /// <summary>
         /// Liste contenant les pages avec des pdf
@@ -60,11 +28,14 @@ namespace algoResearch
         /// <summary>
         /// Constructeur de classe
         /// </summary>
+=======
+>>>>>>> 1a9eb25f5f46de42b5bcd8c2e6090db10d5b3823
         public ResearchETML()
         {
 
         }
 
+<<<<<<< HEAD
         /// <summary>
         /// Retourne l'instanc de classe
         /// </summary>
@@ -83,18 +54,16 @@ namespace algoResearch
         /// </summary>
         /// <param name="textToSearch"></param>
         /// <returns></returns>
+=======
+>>>>>>> 1a9eb25f5f46de42b5bcd8c2e6090db10d5b3823
         public string Start(string textToSearch)
         {
             return string.Empty;
         }
 
-        /// <summary>
-        /// Récupère le contenu d'une page html
-        /// </summary>
-        /// <param name="url">URL de la page cible</param>
-        /// <returns>Le contenu de la page en un chaîne de caractère</returns>
         public string getTextinHTML(string url)
         {
+<<<<<<< HEAD
             var html = "";
             try
             {
@@ -129,6 +98,28 @@ namespace algoResearch
                 //Console.WriteLine(e);
                 //Thread.Sleep(10000);
             }
+=======
+            var html = new WebClient().DownloadString(url);
+            //string htmlTagPattern = "<.*?>";
+            var regexCss = new Regex("(\\<script(.+?)\\</script\\>)|(\\<style(.+?)\\</style\\>)", RegexOptions.Singleline | RegexOptions.IgnoreCase);
+            html = regexCss.Replace(html, string.Empty);
+            //html = Regex.Replace(html, htmlTagPattern, string.Empty);
+            //html = Regex.Replace(html, @"^\s+$[\r\n]*", String.Empty, RegexOptions.Multiline);
+            html = html.Replace("&nbsp;", string.Empty);
+            Regex regEx = new Regex("<[^>]*>", RegexOptions.IgnoreCase);
+            html = regEx.Replace(html, String.Empty);
+            //html = Regex.Replace(html, @"(\<!--\s*.*?((--\>)|$))", String.Empty);
+            html = Regex.Replace(html, @"\n", String.Empty);
+            html = Regex.Replace(html, @"\r", " ");
+            html = Regex.Replace(html, @"\t", " ");
+            //html = Regex.Replace(html, @"&copy;", String.Empty);
+            //\s*href\s *=\s*(\"([^"]*\")|'[^']*'|([^'">\s]+))
+            //<a([^>]?)>(.?)<\/a>
+            html = Regex.Replace(html, @"^((\<!--\s*.*?((--\>)|$))|\\n|<.*?>)", String.Empty);
+            byte[] bytes = Encoding.Default.GetBytes(html);
+            html = Encoding.UTF8.GetString(bytes);
+            html = Regex.Replace(html, @"[ ]{2,}", " ");
+>>>>>>> 1a9eb25f5f46de42b5bcd8c2e6090db10d5b3823
             return html;
         }
 
@@ -139,6 +130,7 @@ namespace algoResearch
         /// <returns>tous les liens domaines</returns>
         public List<string> getLinks(string url)
         {
+<<<<<<< HEAD
             List<string> finalLinks = new List<string>();
             string htmlCode = "";
             try
@@ -197,34 +189,61 @@ namespace algoResearch
                                 nbrEtmlLinks++;
                             }
                         }
+=======
+            string htmlCode = new WebClient().DownloadString(url);
+            var linkTags = Regex.Matches(htmlCode, "<a\\s*(.*)>(.*)</a>", RegexOptions.Multiline);
+            object[] links = new object[linkTags.Count];
+            linkTags.CopyTo(links, 0);
+
+            for (int i = 0; i < links.Length; i++)
+            {
+                links[i] = Regex.Replace(Regex.Match(links[i].ToString(), "\\s*href\\s*=\\s*(\"([^\"]*\")|'[^']*'|([^'\">\\s]+))").ToString(), "href=\"", String.Empty);
+                links[i] = Regex.Replace(links[i].ToString(), "\\s", String.Empty);
+                links[i] = Regex.Replace(links[i].ToString(), "\"", String.Empty);
+            }
+
+            List<string> finalLinks = new List<string>();
+            string[] allLinks = new string[links.Length];
+
+            for (int i = 0; i < links.Length; i++)
+            {
+                allLinks[i] = links[i].ToString();
+            }
+
+            int nbrEtmlLinks = 0;
+            foreach (string link in allLinks)
+            {
+                if (link[0] == '/' && link.Length > 2)
+                {
+                    finalLinks.Add(link);
+                    if (IsNotIn(allLinksFinal, link))
+                    {
+                        allLinksFinal.Add(link);
+>>>>>>> 1a9eb25f5f46de42b5bcd8c2e6090db10d5b3823
                     }
+                    nbrEtmlLinks++;
                 }
             }
+<<<<<<< HEAD
             catch (Exception e)
             {
                 //Console.WriteLine(e);
                 //Thread.Sleep(1000);
             }
+=======
+
+>>>>>>> 1a9eb25f5f46de42b5bcd8c2e6090db10d5b3823
             return finalLinks;
         }
 
-        /// <summary>
-        /// Vérifie si un élément ne fait pas partie d'une list
-        /// </summary>
-        /// <param name="list">Liste de tous les éléments</param>
-        /// <param name="elementToCheck">Elément cible pour la recherche</param>
-        /// <returns>true si inexistant dans la liste</returns>
         public bool IsNotIn(List<string> list, string elementToCheck)
         {
             return !list.Contains(elementToCheck);
         }
 
-        /// <summary>
-        /// Sépare et affiche tous les mots d'une page html
-        /// </summary>
-        /// <param name="url">URL de la page cible</param>
         public void RecoverAllWords(string url)
         {
+<<<<<<< HEAD
             string newURL = "";
             while (actualColor == lastColor || actualColor == ConsoleColor.Black)
             {
@@ -235,6 +254,9 @@ namespace algoResearch
             Console.WriteLine(newURL + "> start\nNouveaux mots trouvés :");
             //Pour chaque mots trouvé sur la page
             foreach (string word in getTextinHTML(url).Split(' '))
+=======
+            foreach (string word in getTextinHTML(url).Split())
+>>>>>>> 1a9eb25f5f46de42b5bcd8c2e6090db10d5b3823
             {
                 //Si le mot n'est pas dans la liste --> ajout
                 if (IsNotIn(allETMLWords, word))
@@ -246,6 +268,7 @@ namespace algoResearch
                 }
             }
 
+<<<<<<< HEAD
 
             if (url.Contains("https://www.etml.ch"))
             {
@@ -256,6 +279,10 @@ namespace algoResearch
                 pagesChecked.Add(newURL);
                 Console.WriteLine(newURL + "> end");
             }
+=======
+            pagesChecked.Add(url);
+            Console.WriteLine(url);
+>>>>>>> 1a9eb25f5f46de42b5bcd8c2e6090db10d5b3823
 
             foreach (string link in getLinks(url))
             {
@@ -266,6 +293,7 @@ namespace algoResearch
                 }
             }
         }
+<<<<<<< HEAD
 
 
         private bool RemoteFileExists(string url)
@@ -321,5 +349,7 @@ namespace algoResearch
             }
         }
 
+=======
+>>>>>>> 1a9eb25f5f46de42b5bcd8c2e6090db10d5b3823
     }
 }
