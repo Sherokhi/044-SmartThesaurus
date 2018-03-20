@@ -18,7 +18,7 @@ namespace ThesaurusoIndexor
         //Connexion à la base de données
         private DBConnect dbd = new DBConnect();
 
-        //
+        const int MAX_SIZE_WORLD = 50;
 
         // Create a reader for the given PDF file
         PdfDocument document;
