@@ -45,9 +45,17 @@ namespace ThesaurusoIndexor
         }
 
         /// <summary>
-        /// Lance la recherche sur le K
+        /// 
         /// </summary>
-        public void BeginTheReasearch()
+        public void BeginTheResearchFolder()
+        {
+
+        }
+
+        /// <summary>
+        /// Lance la recherche sur le K pour les mots
+        /// </summary>
+        public void BeginTheReasearchWord()
         {
             string allData = "";
             string allData2 = "";
