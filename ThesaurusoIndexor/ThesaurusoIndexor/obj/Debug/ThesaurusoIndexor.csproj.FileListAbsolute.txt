@@ -46,3 +46,9 @@ C:\Users\rossetlo\Desktop\P_OO\ThesaurusoIndexor\ThesaurusoIndexor\bin\Debug\ite
 C:\Users\rossetlo\Desktop\P_OO\ThesaurusoIndexor\ThesaurusoIndexor\bin\Debug\MySql.Data.dll
 C:\Users\rossetlo\Desktop\P_OO\ThesaurusoIndexor\ThesaurusoIndexor\bin\Debug\itextsharp.xml
 C:\Users\rossetlo\Desktop\P_OO\ThesaurusoIndexor\ThesaurusoIndexor\bin\Debug\MySql.Data.xml
+F:\Applications-Projets\044-P_OO\NewClone\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.csprojResolveAssemblyReference.cache
+F:\Applications-Projets\044-P_OO\NewClone\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.Form1.resources
+F:\Applications-Projets\044-P_OO\NewClone\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.Properties.Resources.resources
+F:\Applications-Projets\044-P_OO\NewClone\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.csproj.GenerateResource.Cache
+F:\Applications-Projets\044-P_OO\NewClone\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.exe
+F:\Applications-Projets\044-P_OO\NewClone\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.pdb
