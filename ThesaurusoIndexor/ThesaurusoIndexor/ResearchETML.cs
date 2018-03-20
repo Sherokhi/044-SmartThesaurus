@@ -19,6 +19,11 @@ namespace algoResearch
         string startURL = "https://www.etml.ch/vie-de-lecole/menus-du-restaurant.html";
 
         /// <summary>
+        /// Mots à recherchés selon l'entrée utilisateur
+        /// </summary>
+        string[] searchArguments;
+
+        /// <summary>
         /// Instance de classe pour le singleton
         /// </summary>
         private static ResearchETML instance;
@@ -41,8 +46,9 @@ namespace algoResearch
         /// <summary>
         /// Listes des pages analysées durant le processus de recherche
         /// </summary>
-        List<string> pagesChecked = new List<string>();
+        List<WebPage> pagesChecked = new List<WebPage>();
 
+        List<WebPage> pagesToCheck = new List<WebPage>();
         /// <summary>
         /// Liste contenant les pages avec des pdf
         /// </summary>
@@ -80,7 +86,10 @@ namespace algoResearch
         /// <returns></returns>
         public string Start(string textToSearch)
         {
-            return string.Empty;
+            searchArguments = textToSearch.Split(' ');
+            
+
+            return String.Empty;
         }
 
         /// <summary>
@@ -197,37 +206,49 @@ namespace algoResearch
             }
             catch (Exception e)
             {
-                //Console.WriteLine(e);
-                //Thread.Sleep(1000);
             }
             return finalLinks;
         }
 
         /// <summary>
-        /// Vérifie si un élément ne fait pas partie d'une list
+        /// Vérifie si un élément ne fait pas partie d'une liste
         /// </summary>
         /// <param name="list">Liste de tous les éléments</param>
         /// <param name="elementToCheck">Elément cible pour la recherche</param>
         /// <returns>true si inexistant dans la liste</returns>
-        public bool IsNotIn(List<string> list, string elementToCheck)
+        public bool IsNotIn<T>(List<T> list, T elementToCheck)
         {
             return !list.Contains(elementToCheck);
         }
 
+        public bool IsNotIn(List<WebPage> list, WebPage elementToCheck)
+        {
+            bool check = true;
+            foreach(WebPage page in list)
+            {
+                if(page == elementToCheck)
+                {
+                    check = false;
+                    break;
+                }
+            }
+            return check;
+        }
         /// <summary>
         /// Sépare et affiche tous les mots d'une page html
         /// </summary>
         /// <param name="url">URL de la page cible</param>
         public void RecoverAllWords(string url)
         {
+            WebPage actualPage = new WebPage("");
             string newURL = "";
-            while (actualColor == lastColor || actualColor == ConsoleColor.Black)
-            {
-                actualColor = (ConsoleColor)(r.Next(15));
-            }
-            lastColor = actualColor;
-            Console.ForegroundColor = actualColor;
-            Console.WriteLine(newURL + "> start\nNouveaux mots trouvés :");
+            //while (actualColor == lastColor || actualColor == ConsoleColor.Black)
+            //{
+            //    actualColor = (ConsoleColor)(r.Next(15));
+            //}
+            //lastColor = actualColor;
+            //Console.ForegroundColor = actualColor;
+            //Console.WriteLine(newURL + "> start\nNouveaux mots trouvés :");
             //Pour chaque mots trouvé sur la page
             foreach (string word in getTextinHTML(url).Split(' '))
             {
@@ -248,13 +269,13 @@ namespace algoResearch
             }
             if (newURL != "")
             {
-                pagesChecked.Add(newURL);
+                pagesChecked.Add(actualPage);
                 Console.WriteLine(newURL + "> end");
             }
 
             foreach (string link in getLinks(url))
             {
-                if (IsNotIn(pagesChecked, link))
+                if (IsNotIn(pagesChecked, new WebPage("")))
                 {
                     Console.WriteLine(link);
                     RecoverAllWords("https://www.etml.ch" + link);
@@ -262,41 +283,9 @@ namespace algoResearch
             }
         }
 
-
-        private bool RemoteFileExists(string url)
-        {
-            try
-            {
-                HttpWebRequest request = HttpWebRequest.Create(url) as HttpWebRequest;
-                request.Timeout = 5000; //set the timeout to 5 seconds to keep the user from waiting too long for the page to load
-                request.Method = "HEAD"; //Get only the header information -- no need to download any content
-
-                HttpWebResponse response = request.GetResponse() as HttpWebResponse;
-
-                int statusCode = (int)response.StatusCode;
-                if (statusCode >= 100 && statusCode < 400) //Good requests
-                {
-                    return true;
-                }
-                else if (statusCode >= 500 && statusCode <= 510) //Server Errors
-                {
-                    return false;
-                }
-            }
-            catch (WebException ex)
-            {
-                if (ex.Status == WebExceptionStatus.ProtocolError) //400 errors
-                {
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
-            return false;
-        }
-
+        /// <summary>
+        /// AFfiche tous les mots présents sur la recherche
+        /// </summary>
         public void PrintAllWords()
         {
             Console.Clear();
@@ -307,6 +296,9 @@ namespace algoResearch
             }
         }
 
+        /// <summary>
+        /// Lit tous les pdf pour les ajouter à la recherche
+        /// </summary>
         public void ReadAllPDF()
         {
             foreach (string fileLink in pdfETML)
@@ -314,6 +306,11 @@ namespace algoResearch
                 WebClient wc = new WebClient();
                 wc.DownloadFile("https://www.etml.ch" + fileLink, fileLink.Split('/')[fileLink.Split('/').Length - 1]);
             }
+        }
+
+        public List<WebPage> GetAllPageToCheck(string startURL)
+        {
+            return new List<WebPage>();
         }
 
     }
