@@ -72,14 +72,14 @@ namespace ThesaurusoIndexor
             foreach (string str in userSearch)
             {
                 //Requète pour ceux qui le possède dans leur contenu
-                string theRequest = "SELECT * FROM t_mots INNER JOIN t_occurencefolder WHERE t_mots.motID = t_occurencefolder.motID AND t_mots.motIsTitle = false;";
+                string theRequest = "SELECT t_folder.* FROM t_occurencefolder, t_folder, t_mots WHERE t_occurencefolder.folID = t_folder.folID AND t_occurencefolder.motID = t_mots.motID AND t_mots.motIsTitle = false;";
                 //On récupère le contenu du mot
                 string[] files = dbd.sendRequest(theRequest, 1);
 
                 //Requète pour ceux qui le possède dans leur nom de fichier
-                string theRequest2 = "SELECT * FROM t_mots INNER JOIN t_occurencefolder WHERE t_mots.motID = t_occurencefolder.motID AND t_mots.motIsTitle = true;";
+                string theRequest2 = "SELECT t_folder.* FROM t_occurencefolder, t_folder, t_mots WHERE t_occurencefolder.folID = t_folder.folID AND t_occurencefolder.motID = t_mots.motID AND t_mots.motIsTitle = true;";
                 //On récupère aussi le bool qui dit si c'est un nom de fichiers
-                string[] filesTitle = dbd.sendRequest(theRequest2, 1);
+                string[] filesTitle = dbd.sendRequest(theRequest2, 2);
 
                 form1.pbLoad.Maximum = files.Count();
                 form1.btn_Research.Enabled = false;
@@ -95,7 +95,14 @@ namespace ThesaurusoIndexor
                 foreach (string s in filesTitle)
                 {
                     counter++;
-                    allData += s + "\r\n";
+                    if (s != null)
+                    {
+                        if (!allData.Contains(s))
+                        {
+                            allData += s + "\r\n";
+                        }
+                    }
+
                     if (form1.pbLoad.Value < form1.pbLoad.Maximum)
                     {
                         form1.pbLoad.Value++;

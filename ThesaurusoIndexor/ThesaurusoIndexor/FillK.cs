@@ -11,6 +11,9 @@ using System.Text.RegularExpressions;
 
 namespace ThesaurusoIndexor
 {
+    /// <summary>
+    /// Remplit le K
+    /// </summary>
     public class FillK
     {
         //Singleton
@@ -26,7 +29,9 @@ namespace ThesaurusoIndexor
         // Create a reader for the given PDF file
         PdfDocument document;
 
-
+        /// <summary>
+        /// Singleton
+        /// </summary>
         private FillK()
         {
 
@@ -87,33 +92,28 @@ namespace ThesaurusoIndexor
                     {
                         if (word != "" && word.Length > 1 && word.Length < MAX_SIZE_WORLD && Regex.IsMatch(word, "^[A-Za-z0-9@àäéöèüêçï&]+$"))
                         {
-                            //Si la liste des mots ne contient pas encore le mot
-                            if (!lstWord.ContainsKey(word))
+                            //Pour chaque fichier dans la liste d'occurence
+                            foreach (OccFolder fol in lstOccurence)
                             {
-                                lstWord.Add(word, 0);
-
-                                //Pour chaque fichier dans la liste d'occurence
-                                foreach (OccFolder fol in lstOccurence)
+                                //On vérifie si le nom du fichier correspond au fichier actuel
+                                if (fol.folName == s)
                                 {
-                                    //On vérifie si le nom du fichier correspond au fichier actuel
-                                    if (fol.folName == s)
+                                    if (!fol.occWord.ContainsKey(word))
                                     {
                                         //On crée le mot
                                         fol.occWord.Add(word, 1);
+
                                     }
-                                }
-                            }
-                            //Sinon
-                            else
-                            {
-                                //Pour chaque fichier dans la liste d'occurence
-                                foreach (OccFolder fol in lstOccurence)
-                                {
-                                    //On vérifie si le nom du fichier correspond au fichier actuel
-                                    if (fol.folName == s)
+                                    //Sinon
+                                    else
                                     {
                                         //On incrémente l'occurence du mot
                                         fol.occWord[word]++;
+                                    }
+
+                                    if (!lstWord.ContainsKey(word))
+                                    {
+                                        lstWord.Add(word, 0);
                                     }
                                 }
                             }
@@ -137,9 +137,30 @@ namespace ThesaurusoIndexor
                     {
                         if (word != "" && word.Length > 1 && word.Length < MAX_SIZE_WORLD && Regex.IsMatch(word, "^[A-Za-z0-9@àäéöèüêçï&]+$"))
                         {
-                            if (!lstWord.ContainsKey(word))
+                            //Pour chaque fichier dans la liste d'occurence
+                            foreach (OccFolder fol in lstOccurence)
                             {
-                                lstWord.Add(word, 0);
+                                //On vérifie si le nom du fichier correspond au fichier actuel
+                                if (fol.folName == s)
+                                {
+                                    if (!fol.occWord.ContainsKey(word))
+                                    {
+                                        //On crée le mot
+                                        fol.occWord.Add(word, 1);
+
+                                    }
+                                    //Sinon
+                                    else
+                                    {
+                                        //On incrémente l'occurence du mot
+                                        fol.occWord[word]++;
+                                    }
+
+                                    if (!lstWord.ContainsKey(word))
+                                    {
+                                        lstWord.Add(word, 0);
+                                    }
+                                }
                             }
                         }
                     }
@@ -190,7 +211,7 @@ namespace ThesaurusoIndexor
             {
                 string[] pathTab = folder.Split('\\');
                 string name = pathTab[pathTab.Length - 1];
-                string theRequest = "INSERT INTO t_folder VALUES (NULL,'" + folder.Replace("\\", "\\\\") + "', '" + name + "', NULL , NULL);";
+                string theRequest = "INSERT INTO t_folder VALUES (NULL,'" + folder + "', '" + name + "', NULL , NULL);";
                 dbd.getRequest(theRequest);
             }
         }
@@ -220,7 +241,7 @@ namespace ThesaurusoIndexor
                 }
 
                 //Requète pour ceux qui le possède dans leur contenu
-                string selectRequestFolder = "SELECT folID FROM t_folder WHERE folUrl = \"" + folder.folName + "\";";
+                string selectRequestFolder = "SELECT folID FROM t_folder WHERE folUrl =\"" + folder.folName + "\";";
 
                 //Problème lors de la prise de l'id du fichier par rapport a l'url
                 //On récupère l'id du fichier

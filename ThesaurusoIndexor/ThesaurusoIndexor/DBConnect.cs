@@ -107,6 +107,8 @@ namespace ThesaurusoIndexor
             int compteur = 0;
             //Tableau de string qui va contenir les mots
             string[] tabString = new string[dataReader.FieldCount];
+
+
             //Tant qu'on peut lire le reader
             while (dataReader.Read())
             {
@@ -115,7 +117,7 @@ namespace ThesaurusoIndexor
                 compteur++;
             }
             dataReader.Close();
-
+            dataReader.Dispose();
             return tabString;
 
         }
