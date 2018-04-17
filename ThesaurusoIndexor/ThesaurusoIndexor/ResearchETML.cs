@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using ThesaurusoIndexor;
+using System.Windows.Forms;
 
 namespace algoResearch
 {
@@ -16,22 +19,12 @@ namespace algoResearch
         /// <summary>
         /// URL de départ
         /// </summary>
-        string startURL = "https://www.etml.ch/vie-de-lecole/menus-du-restaurant.html";
-
-        /// <summary>
-        /// Mots à recherchés selon l'entrée utilisateur
-        /// </summary>
-        string[] searchArguments;
+        string startURL = "https://www.etml.ch/index.php";
 
         /// <summary>
         /// Instance de classe pour le singleton
         /// </summary>
         private static ResearchETML instance;
-
-        /// <summary>
-        /// Tableau des liens récupérés sur une page html
-        /// </summary>
-        string[] links;
 
         /// <summary>
         /// Liste de tous les liens présents sur un site, toute pages confondues
@@ -41,36 +34,35 @@ namespace algoResearch
         /// <summary>
         /// Tous les mots contenu sur le site de l'ETML, toutes pages confondues
         /// </summary>
-        List<string> allETMLWords = new List<string>();
+        private List<wordETML> allETMLWords = new List<wordETML>();
 
         /// <summary>
         /// Listes des pages analysées durant le processus de recherche
         /// </summary>
-        List<WebPage> pagesChecked = new List<WebPage>();
+        private List<string> pagesChecked = new List<string>();
 
-        List<WebPage> pagesToCheck = new List<WebPage>();
         /// <summary>
         /// Liste contenant les pages avec des pdf
         /// </summary>
-        List<string> pdfETML = new List<string>();
+        private List<string> pdfETML = new List<string>();
 
-        Random r = new Random();
-        ConsoleColor actualColor = new ConsoleColor();
-        ConsoleColor lastColor = new ConsoleColor();
+        private Random r = new Random();
+
+        private DBConnect bdd;
 
         /// <summary>
         /// Constructeur de classe
         /// </summary>
         public ResearchETML()
         {
-
+            this.bdd = new DBConnect();
         }
 
         /// <summary>
         /// Retourne l'instanc de classe
         /// </summary>
         /// <returns>Instance de classe</returns>
-        public ResearchETML getInstance()
+        public static ResearchETML getInstance()
         {
             if (instance == null)
             {
@@ -86,10 +78,9 @@ namespace algoResearch
         /// <returns></returns>
         public string Start(string textToSearch)
         {
-            searchArguments = textToSearch.Split(' ');
-            
-
-            return String.Empty;
+            SyncBddData();
+            PrintAllWords();
+            return string.Empty;
         }
 
         /// <summary>
@@ -115,7 +106,16 @@ namespace algoResearch
                 html = Regex.Replace(html, @"\n", String.Empty);
                 html = Regex.Replace(html, @"\r", " ");
                 html = Regex.Replace(html, @"\t", " ");
-
+                html = Regex.Replace(html, "[,.;:()+-?`^{}[]]", String.Empty);
+                html = Regex.Replace(html, "[\'\"]", " ");
+                html = Regex.Replace(html, "&eacute", "é");
+                html = Regex.Replace(html, "&amp", String.Empty);
+                html = Regex.Replace(html, "&copy", String.Empty);
+                html = Regex.Replace(html, "&nbsp", " ");
+                html = Regex.Replace(html, "&agrave", "à");
+                html = Regex.Replace(html, "[\\d]", String.Empty);
+                html = Regex.Replace(html, "|", String.Empty);
+                //html = Regex.Replace(html, "?", "é");
                 //Suppression des balises commentaires
                 html = Regex.Replace(html, @"^((\<!--\s*.*?((--\>)|$))|\\n|<.*?>)", String.Empty);
 
@@ -126,12 +126,15 @@ namespace algoResearch
                 html = Encoding.UTF8.GetString(bytes);
 
                 //Suppression des espaces en trop
-                html = Regex.Replace(html, @"[ ]{2,}", " ");
+                while(Regex.IsMatch(html, @"[\s]{2,}"))
+                {
+                    html = Regex.Replace(html, @"[\s]{2,}", " ");
+                }
+                html = html.ToLower();
             }
             catch (Exception e)
             {
-                //Console.WriteLine(e);
-                //Thread.Sleep(10000);
+                MessageBox.Show("Une erreur s'est produite : " + e.Message);
             }
             return html;
         }
@@ -206,98 +209,120 @@ namespace algoResearch
             }
             catch (Exception e)
             {
+                MessageBox.Show("Une erreur s'est produite : " + e.Message);
             }
             return finalLinks;
         }
 
         /// <summary>
-        /// Vérifie si un élément ne fait pas partie d'une liste
+        /// Vérifie si un élément ne fait pas partie d'une list
         /// </summary>
         /// <param name="list">Liste de tous les éléments</param>
         /// <param name="elementToCheck">Elément cible pour la recherche</param>
         /// <returns>true si inexistant dans la liste</returns>
-        public bool IsNotIn<T>(List<T> list, T elementToCheck)
+        public bool IsNotIn(List<string> list, string elementToCheck)
         {
             return !list.Contains(elementToCheck);
         }
 
-        public bool IsNotIn(List<WebPage> list, WebPage elementToCheck)
+        public bool IsNotIn(List<wordETML> list, wordETML elementToCheck)
         {
-            bool check = true;
-            foreach(WebPage page in list)
-            {
-                if(page == elementToCheck)
-                {
-                    check = false;
-                    break;
-                }
-            }
-            return check;
+            return !list.Contains(elementToCheck);
         }
+	
         /// <summary>
         /// Sépare et affiche tous les mots d'une page html
         /// </summary>
         /// <param name="url">URL de la page cible</param>
+        /// <param name="url">URL de la page cible</param>
         public void RecoverAllWords(string url)
         {
-            WebPage actualPage = new WebPage("");
             string newURL = "";
-            //while (actualColor == lastColor || actualColor == ConsoleColor.Black)
-            //{
-            //    actualColor = (ConsoleColor)(r.Next(15));
-            //}
-            //lastColor = actualColor;
-            //Console.ForegroundColor = actualColor;
-            //Console.WriteLine(newURL + "> start\nNouveaux mots trouvés :");
+
             //Pour chaque mots trouvé sur la page
             foreach (string word in getTextinHTML(url).Split(' '))
             {
+                string query;
+                wordETML newWord = new wordETML(url, word);
                 //Si le mot n'est pas dans la liste --> ajout
-                if (IsNotIn(allETMLWords, word))
+                if(word.Contains(" "))
                 {
-                    allETMLWords.Add(word);
-
-                    //Output console
-                    Console.WriteLine(word);
+                    word.Remove(' ');
+                }
+                if(word.Length > 1)
+                {
+                    if (IsNotIn(allETMLWords, newWord))
+                    {
+                        query = "INSERT INTO `t_mots` (`motContenu`, `motIsFromETML`) VALUES ('" + word + "', 1);";
+                        bdd.getRequest(query);
+                        CreateNewOccurence(word, url);
+                        allETMLWords.Add(newWord);
+                    }
+                    else
+                    {
+                        addOccurence(word);
+                    }
                 }
             }
 
-
+            //Si l'url contient
             if (url.Contains("https://www.etml.ch"))
             {
                 newURL = url.Remove(0, 19);
             }
+
+            //Si l'url n'est pas vide
             if (newURL != "")
             {
-                pagesChecked.Add(actualPage);
-                Console.WriteLine(newURL + "> end");
+                pagesChecked.Add(newURL);
             }
-
+            //Pour tous les liens dans la liste
             foreach (string link in getLinks(url))
             {
-                if (IsNotIn(pagesChecked, new WebPage("")))
+                //Si le lien n'a pas encore été checké
+                if (IsNotIn(pagesChecked, link))
                 {
-                    Console.WriteLine(link);
+                    //Relancer une recherche avec ce lien
                     RecoverAllWords("https://www.etml.ch" + link);
                 }
             }
         }
 
+        private void CreateNewOccurence(string word, string url)
+        {
+            string query = "";
+            query = "SELECT * FROM t_mots WHERE t_mots.motContenu = '" + word + "'";
+            List<string> idResults = bdd.sendRequest(query, 1);
+            query = "INSERT INTO t_occurence web (`occNumber`, `webURL`, `motID`) VALUES (1, "+url+", "+idResults[0]+")";
+        }
+
+        private void addOccurence(string word)
+        {
+            string query = "";
+            query = "SELECT * FROM t_mots WHERE t_mots.motContenu = '" + word + "'";
+            List<string> idResults = bdd.sendRequest(query, 1);
+            query = "UPDATE t_occurenceweb SET occNumber = ((SELECT occNumber WHERE motID = '" + idResults[0] + "') +1) WHERE motID = '" + idResults[0] + "'; ";
+            bdd.getRequest(query);
+        }
+
+
+
+
         /// <summary>
-        /// AFfiche tous les mots présents sur la recherche
+        /// Affiche tous les mots trouvé sur le site de l'etml
         /// </summary>
         public void PrintAllWords()
         {
             Console.Clear();
             Console.WriteLine("Mots trouvés sur le site de l'ETML :");
-            foreach (string word in allETMLWords)
+            foreach (wordETML word in allETMLWords)
             {
-                Console.WriteLine(word);
+                Console.WriteLine(word.Value);
             }
         }
 
         /// <summary>
-        /// Lit tous les pdf pour les ajouter à la recherche
+        /// Méthode pour lire tous les pdf trouvés
         /// </summary>
         public void ReadAllPDF()
         {
@@ -308,10 +333,45 @@ namespace algoResearch
             }
         }
 
-        public List<WebPage> GetAllPageToCheck(string startURL)
+        private void SyncBddData()
         {
-            return new List<WebPage>();
+            string query = "DELETE FROM t_mots WHERE motIsFromETML = '1';";
+            bdd.getRequest(query);
+            RecoverAllWords(startURL);
         }
 
+        //private bool RemoteFileExists(string url)
+        //{
+        //    try
+        //    {
+        //        HttpWebRequest request = HttpWebRequest.Create(url) as HttpWebRequest;
+        //        request.Timeout = 5000; //set the timeout to 5 seconds to keep the user from waiting too long for the page to load
+        //        request.Method = "HEAD"; //Get only the header information -- no need to download any content
+
+        //        HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+
+        //        int statusCode = (int)response.StatusCode;
+        //        if (statusCode >= 100 && statusCode < 400) //Good requests
+        //        {
+        //            return true;
+        //        }
+        //        else if (statusCode >= 500 && statusCode <= 510) //Server Errors
+        //        {
+        //            return false;
+        //        }
+        //    }
+        //    catch (WebException ex)
+        //    {
+        //        if (ex.Status == WebExceptionStatus.ProtocolError) //400 errors
+        //        {
+        //            return false;
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+
+        //    }
+        //    return false;
+        //}
     }
 }
