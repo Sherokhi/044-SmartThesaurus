@@ -7,6 +7,7 @@ using System;
 using MySql.Data.MySqlClient;
 using System.Windows.Forms;
 using System.Data;
+using System.Collections.Generic;
 
 namespace ThesaurusoIndexor
 {
@@ -97,28 +98,27 @@ namespace ThesaurusoIndexor
         /// Execute la requète et renvoi un tableau de string
         /// </summary>
         /// <param name="request"></param>
-        public string[] sendRequest(string request, int colonne)
+        public List<string> sendRequest(string request, int colonne)
         {
             //Commande mysql
             MySqlCommand mySqlRequest = new MySqlCommand(request, _Connection);
+            
             //Datareader qui permet de faire un select
             MySqlDataReader dataReader = mySqlRequest.ExecuteReader();
-            //Comptteur pour le tableau
-            int compteur = 0;
+            
             //Tableau de string qui va contenir les mots
-            string[] tabString = new string[dataReader.FieldCount];
+            List<string> lstString = new List<string>();
 
 
             //Tant qu'on peut lire le reader
             while (dataReader.Read())
             {
                 //Sélectionne motcontenu
-                tabString[compteur] = dataReader.GetString(colonne);
-                compteur++;
+                lstString.Add(dataReader.GetString(colonne));
             }
             dataReader.Close();
             dataReader.Dispose();
-            return tabString;
+            return lstString;
 
         }
 

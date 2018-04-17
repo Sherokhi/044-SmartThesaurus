@@ -23,6 +23,9 @@ namespace ThesaurusoIndexor
         //Taille max d'un mot
         const int MAX_SIZE_WORLD = 50;
 
+        //Chemin
+        const string PATH = @"K:\INF\Eleves\Temp";
+
         //Liste des fichiers et de leurs occurences par mots
         private List<OccFolder> lstOccurence = new List<OccFolder>();
 
@@ -66,13 +69,13 @@ namespace ThesaurusoIndexor
             try
             {
                 //Pour les fichiers qui contiennent la contrainte dans leur chemin
-                string[] files = Directory.GetFiles(@"D:\DATA\fichier", "*", SearchOption.AllDirectories);
+                string[] files = Directory.GetFiles(PATH, "*", SearchOption.AllDirectories);
 
                 //Pour les fichiers qui possèdent la contrainte dans leur contenu pdf
-                string[] filePdf = Directory.GetFiles(@"D:\DATA\fichier", "*" + ".pdf", SearchOption.AllDirectories);
+                string[] filePdf = Directory.GetFiles(PATH, "*" + ".pdf", SearchOption.AllDirectories);
 
                 //Pour les fichiers qui possèdent la contrainte dans leur contenu txt
-                string[] fileTxt = Directory.GetFiles(@"D:\DATA\fichier", "*" + ".txt", SearchOption.AllDirectories);
+                string[] fileTxt = Directory.GetFiles(PATH, "*" + ".txt", SearchOption.AllDirectories);
 
                 //Pour les noms de fichiers
                 foreach (string s in files)
@@ -90,6 +93,8 @@ namespace ThesaurusoIndexor
                     allWords = text.Split(' ');
                     foreach (string word in allWords)
                     {
+                        string changedWord = word.ToLower();
+
                         if (word != "" && word.Length > 1 && word.Length < MAX_SIZE_WORLD && Regex.IsMatch(word, "^[A-Za-z0-9@àäéöèüêçï&]+$"))
                         {
                             //Pour chaque fichier dans la liste d'occurence
@@ -98,22 +103,22 @@ namespace ThesaurusoIndexor
                                 //On vérifie si le nom du fichier correspond au fichier actuel
                                 if (fol.folName == s)
                                 {
-                                    if (!fol.occWord.ContainsKey(word))
+                                    if (!fol.occWord.ContainsKey(changedWord))
                                     {
                                         //On crée le mot
-                                        fol.occWord.Add(word, 1);
+                                        fol.occWord.Add(changedWord, 1);
 
                                     }
                                     //Sinon
                                     else
                                     {
                                         //On incrémente l'occurence du mot
-                                        fol.occWord[word]++;
+                                        fol.occWord[changedWord]++;
                                     }
 
-                                    if (!lstWord.ContainsKey(word))
+                                    if (!lstWord.ContainsKey(changedWord))
                                     {
-                                        lstWord.Add(word, 0);
+                                        lstWord.Add(changedWord, 0);
                                     }
                                 }
                             }
@@ -135,6 +140,8 @@ namespace ThesaurusoIndexor
                     allWords = text.Split(' ');
                     foreach(string word in allWords)
                     {
+                        string changedWord = word.ToLower();
+
                         if (word != "" && word.Length > 1 && word.Length < MAX_SIZE_WORLD && Regex.IsMatch(word, "^[A-Za-z0-9@àäéöèüêçï&]+$"))
                         {
                             //Pour chaque fichier dans la liste d'occurence
@@ -143,22 +150,22 @@ namespace ThesaurusoIndexor
                                 //On vérifie si le nom du fichier correspond au fichier actuel
                                 if (fol.folName == s)
                                 {
-                                    if (!fol.occWord.ContainsKey(word))
+                                    if (!fol.occWord.ContainsKey(changedWord))
                                     {
                                         //On crée le mot
-                                        fol.occWord.Add(word, 1);
+                                        fol.occWord.Add(changedWord, 1);
 
                                     }
                                     //Sinon
                                     else
                                     {
                                         //On incrémente l'occurence du mot
-                                        fol.occWord[word]++;
+                                        fol.occWord[changedWord]++;
                                     }
 
-                                    if (!lstWord.ContainsKey(word))
+                                    if (!lstWord.ContainsKey(changedWord))
                                     {
-                                        lstWord.Add(word, 0);
+                                        lstWord.Add(changedWord, 0);
                                     }
                                 }
                             }
@@ -235,8 +242,6 @@ namespace ThesaurusoIndexor
                 {
                     //Requète pour ceux qui le possède dans leur contenu
                     string selectRequestWord = "SELECT motID FROM t_mots WHERE motContenu = \"" + entry.Key + "\";";
-
-                    
                     dicID.Add(dbd.sendRequest(selectRequestWord, 0)[0], entry.Value);
                 }
 

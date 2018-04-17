@@ -74,12 +74,12 @@ namespace ThesaurusoIndexor
                 //Requète pour ceux qui le possède dans leur contenu
                 string theRequest = "SELECT t_folder.* FROM t_occurencefolder, t_folder, t_mots WHERE t_occurencefolder.folID = t_folder.folID AND t_occurencefolder.motID = t_mots.motID AND t_mots.motIsTitle = false;";
                 //On récupère le contenu du mot
-                string[] files = dbd.sendRequest(theRequest, 1);
+                List<string> files = dbd.sendRequest(theRequest, 1);
 
                 //Requète pour ceux qui le possède dans leur nom de fichier
                 string theRequest2 = "SELECT t_folder.* FROM t_occurencefolder, t_folder, t_mots WHERE t_occurencefolder.folID = t_folder.folID AND t_occurencefolder.motID = t_mots.motID AND t_mots.motIsTitle = true;";
                 //On récupère aussi le bool qui dit si c'est un nom de fichiers
-                string[] filesTitle = dbd.sendRequest(theRequest2, 2);
+                List<string> filesTitle = dbd.sendRequest(theRequest2, 2);
 
                 form1.pbLoad.Maximum = files.Count();
                 form1.btn_Research.Enabled = false;
