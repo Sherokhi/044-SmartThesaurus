@@ -34,7 +34,7 @@ namespace algoResearch
         /// <summary>
         /// Tous les mots contenu sur le site de l'ETML, toutes pages confondues
         /// </summary>
-        private List<wordETML> allETMLWords = new List<wordETML>();
+        //private List<wordETML> allETMLWords = new List<wordETML>();
 
         /// <summary>
         /// Listes des pages analysées durant le processus de recherche
@@ -225,10 +225,10 @@ namespace algoResearch
             return !list.Contains(elementToCheck);
         }
 
-        public bool IsNotIn(List<wordETML> list, wordETML elementToCheck)
-        {
-            return !list.Contains(elementToCheck);
-        }
+        //public bool IsNotIn(List<wordETML> list, wordETML elementToCheck)
+        //{
+        //    return !list.Contains(elementToCheck);
+        //}
 	
         /// <summary>
         /// Sépare et affiche tous les mots d'une page html
@@ -243,7 +243,7 @@ namespace algoResearch
             foreach (string word in getTextinHTML(url).Split(' '))
             {
                 string query;
-                wordETML newWord = new wordETML(url, word);
+                //wordETML newWord = new wordETML(url, word);
                 //Si le mot n'est pas dans la liste --> ajout
                 if(word.Contains(" "))
                 {
@@ -251,17 +251,17 @@ namespace algoResearch
                 }
                 if(word.Length > 1)
                 {
-                    if (IsNotIn(allETMLWords, newWord))
-                    {
-                        query = "INSERT INTO `t_mots` (`motContenu`, `motIsFromETML`) VALUES ('" + word + "', 1);";
-                        bdd.getRequest(query);
-                        CreateNewOccurence(word, url);
-                        allETMLWords.Add(newWord);
-                    }
-                    else
-                    {
-                        addOccurence(word);
-                    }
+                    //if (IsNotIn(allETMLWords, newWord))
+                    //{
+                    //    query = "INSERT INTO `t_mots` (`motContenu`, `motIsFromETML`) VALUES ('" + word + "', 1);";
+                    //    bdd.getRequest(query);
+                    //    CreateNewOccurence(word, url);
+                    //    allETMLWords.Add(newWord);
+                    //}
+                    //else
+                    //{
+                    //    addOccurence(word);
+                    //}
                 }
             }
 
@@ -315,10 +315,10 @@ namespace algoResearch
         {
             Console.Clear();
             Console.WriteLine("Mots trouvés sur le site de l'ETML :");
-            foreach (wordETML word in allETMLWords)
-            {
-                Console.WriteLine(word.Value);
-            }
+            //foreach (wordETML word in allETMLWords)
+            //{
+            //    Console.WriteLine(word.Value);
+            //}
         }
 
         /// <summary>
