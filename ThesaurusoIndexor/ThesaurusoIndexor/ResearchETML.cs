@@ -79,7 +79,7 @@ namespace algoResearch
         public string Start(string textToSearch)
         {
             SyncBddData();
-            PrintAllWords();
+            //PrintAllWords();
             return string.Empty;
         }
 
@@ -106,7 +106,7 @@ namespace algoResearch
                 html = Regex.Replace(html, @"\n", String.Empty);
                 html = Regex.Replace(html, @"\r", " ");
                 html = Regex.Replace(html, @"\t", " ");
-                html = Regex.Replace(html, "[,.;:()+-?`^{}[]]", String.Empty);
+                html = Regex.Replace(html, "[,.;:()+-?`^{}[]]{1,}", String.Empty);
                 html = Regex.Replace(html, "[\'\"]", " ");
                 html = Regex.Replace(html, "&eacute", "é");
                 html = Regex.Replace(html, "&amp", String.Empty);
@@ -134,7 +134,8 @@ namespace algoResearch
             }
             catch (Exception e)
             {
-                MessageBox.Show("Une erreur s'est produite : " + e.Message);
+                pagesChecked.Add(url);
+                //MessageBox.Show("Une erreur s'est produite : " + e.Message);
             }
             return html;
         }
@@ -200,6 +201,7 @@ namespace algoResearch
                                 if (IsNotIn(allLinksFinal, link))
                                 {
                                     allLinksFinal.Add(link);
+                                    NewWebPage(link);
                                 }
                                 nbrEtmlLinks++;
                             }
@@ -209,7 +211,10 @@ namespace algoResearch
             }
             catch (Exception e)
             {
-                MessageBox.Show("Une erreur s'est produite : " + e.Message);
+                if (IsNotIn(pagesChecked, url))
+                    pagesChecked.Add(url);
+                int rroor = e.Data.Count;
+                //MessageBox.Show("Une erreur s'est produite : " + e.Message);
             }
             return finalLinks;
         }
@@ -238,7 +243,11 @@ namespace algoResearch
         public void RecoverAllWords(string url)
         {
             string newURL = "";
-
+            if (IsNotIn(allLinksFinal, url))
+            {
+                NewWebPage(url);
+                allLinksFinal.Add(url);
+            }
             //Pour chaque mots trouvé sur la page
             foreach (string word in getTextinHTML(url).Split(' '))
             {
@@ -255,7 +264,7 @@ namespace algoResearch
                     {
                         query = "INSERT INTO `t_mots` (`motContenu`, `motIsFromETML`) VALUES ('" + word + "', 1);";
                         bdd.getRequest(query);
-                        CreateNewOccurence(word, url);
+                        NewWordOccurence(word, url);
                         allETMLWords.Add(newWord);
                     }
                     else
@@ -264,7 +273,6 @@ namespace algoResearch
                     }
                 }
             }
-
             //Si l'url contient
             if (url.Contains("https://www.etml.ch"))
             {
@@ -275,32 +283,56 @@ namespace algoResearch
             if (newURL != "")
             {
                 pagesChecked.Add(newURL);
+
             }
             //Pour tous les liens dans la liste
             foreach (string link in getLinks(url))
             {
+                int finished = pagesChecked.Count * 100 / allLinksFinal.Count;
+                if(finished <= 100)
+                {
+                    Console.Clear();
+                    Console.WriteLine("{0}% terminé", finished);
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("99% terminé, veuillez patientez !");
+                }
+
                 //Si le lien n'a pas encore été checké
                 if (IsNotIn(pagesChecked, link))
                 {
                     //Relancer une recherche avec ce lien
                     RecoverAllWords("https://www.etml.ch" + link);
+
                 }
             }
         }
 
-        private void CreateNewOccurence(string word, string url)
+        private void NewWordOccurence(string word, string url)
         {
             string query = "";
-            query = "SELECT * FROM t_mots WHERE t_mots.motContenu = '" + word + "'";
-            List<string> idResults = bdd.sendRequest(query, 1);
-            query = "INSERT INTO t_occurence web (`occNumber`, `webURL`, `motID`) VALUES (1, "+url+", "+idResults[0]+")";
+            query = "SELECT `motID` FROM `t_mots` WHERE `motContenu` = '" + word + "'";
+            Console.WriteLine(query);
+            List<string> idResults = bdd.sendRequest(query, 0);
+            query = "INSERT INTO t_occurenceweb (occNumber, fkWebURL, motID) VALUES (1, '"+url+"', "+idResults[0]+")";
+            bdd.getRequest(query);
+        }
+
+        private void NewWebPage(string url)
+        {
+            string query = "INSERT INTO t_web (webURL) VALUES ('" + url + "')";
+            bdd.getRequest(query);
         }
 
         private void addOccurence(string word)
         {
             string query = "";
-            query = "SELECT * FROM t_mots WHERE t_mots.motContenu = '" + word + "'";
-            List<string> idResults = bdd.sendRequest(query, 1);
+            query = "SELECT `motID` FROM `t_mots` WHERE `motContenu` = '" + word + "'";
+            List<string> idResults = bdd.sendRequest(query, 0);
+            query = "SET FOREIGN_KEY_CHECKS=0";
+            bdd.getRequest(query);
             query = "UPDATE t_occurenceweb SET occNumber = ((SELECT occNumber WHERE motID = '" + idResults[0] + "') +1) WHERE motID = '" + idResults[0] + "'; ";
             bdd.getRequest(query);
         }
@@ -337,7 +369,16 @@ namespace algoResearch
         {
             string query = "DELETE FROM t_mots WHERE motIsFromETML = '1';";
             bdd.getRequest(query);
+            query = "ALTER TABLE t_mots AUTO_INCREMENT=0;";
+            bdd.getRequest(query);
+            query = "DELETE FROM t_web";
+            bdd.getRequest(query);
+            query = "ALTER TABLE t_web AUTO_INCREMENT=0;";
+            bdd.getRequest(query);
             RecoverAllWords(startURL);
+            
+            Console.Clear();
+            Console.WriteLine("100% terminé !");
         }
 
         //private bool RemoteFileExists(string url)
