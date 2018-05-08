@@ -80,10 +80,23 @@ namespace ThesaurusoIndexor
                 //Pour les noms de fichiers
                 foreach (string s in files)
                 {
-                    //Ajout à la liste occurence
-                    lstOccurence.Add(new OccFolder(s));
+                    if (s != "" && s.Length > 1)
+                    {
+                        if (!s.Contains("'"))
+                        {
+                            //Ajout à la liste occurence
+                            lstOccurence.Add(new OccFolder(s));
 
-                    lstFolder.Add(@s);
+                            lstFolder.Add(s);
+
+                            string[] wordTitle = s.Split('\\');
+
+                            if (!lstWord.ContainsKey(wordTitle[wordTitle.Length - 1]))
+                            {
+                                lstWord.Add(wordTitle[wordTitle.Length - 1], 1);
+                            }
+                        }
+                    }
                 }
 
                 //Pour les fichiers txt qui contiennent la contrainte dans leur contenu
@@ -91,17 +104,17 @@ namespace ThesaurusoIndexor
                 {
                     string text = System.IO.File.ReadAllText(s);
                     allWords = text.Split(' ');
-                    foreach (string word in allWords)
-                    {
-                        string changedWord = word.ToLower();
 
-                        if (word != "" && word.Length > 1 && word.Length < MAX_SIZE_WORLD && Regex.IsMatch(word, "^[A-Za-z0-9@àäéöèüêçï&]+$"))
+                    //Pour chaque fichier dans la liste d'occurence
+                    foreach (OccFolder fol in lstOccurence)
+                    {
+                        //On vérifie si le nom du fichier correspond au fichier actuel
+                        if (fol.folName == s)
                         {
-                            //Pour chaque fichier dans la liste d'occurence
-                            foreach (OccFolder fol in lstOccurence)
+                            foreach (string word in allWords)
                             {
-                                //On vérifie si le nom du fichier correspond au fichier actuel
-                                if (fol.folName == s)
+                                string changedWord = word.ToLower();
+                                if (word != "" && word.Length > 1 && word.Length < MAX_SIZE_WORLD && Regex.IsMatch(word, "^[A-Za-z0-9@àäéöèüêçï&]+$"))
                                 {
                                     if (!fol.occWord.ContainsKey(changedWord))
                                     {
@@ -122,6 +135,7 @@ namespace ThesaurusoIndexor
                                     }
                                 }
                             }
+                            break;
                         }
                     }
 
@@ -138,18 +152,18 @@ namespace ThesaurusoIndexor
                     }
                     text = text.Replace("\r\n", " ").Replace("\r", " ").Replace("\n", " ");
                     allWords = text.Split(' ');
-                    foreach(string word in allWords)
+                    //Pour chaque fichier dans la liste d'occurence
+                    foreach (OccFolder fol in lstOccurence)
                     {
-                        string changedWord = word.ToLower();
-
-                        if (word != "" && word.Length > 1 && word.Length < MAX_SIZE_WORLD && Regex.IsMatch(word, "^[A-Za-z0-9@àäéöèüêçï&]+$"))
+                        //On vérifie si le nom du fichier correspond au fichier actuel
+                        if (fol.folName == s)
                         {
-                            //Pour chaque fichier dans la liste d'occurence
-                            foreach (OccFolder fol in lstOccurence)
+                            foreach (string word in allWords)
                             {
-                                //On vérifie si le nom du fichier correspond au fichier actuel
-                                if (fol.folName == s)
+                                string changedWord = word.ToLower();
+                                if (word != "" && word.Length > 1 && word.Length < MAX_SIZE_WORLD && Regex.IsMatch(word, "^[A-Za-z0-9@àäéöèüêçï&]+$"))
                                 {
+
                                     if (!fol.occWord.ContainsKey(changedWord))
                                     {
                                         //On crée le mot
@@ -169,6 +183,7 @@ namespace ThesaurusoIndexor
                                     }
                                 }
                             }
+                            break;
                         }
                     }
 
@@ -218,7 +233,8 @@ namespace ThesaurusoIndexor
             {
                 string[] pathTab = folder.Split('\\');
                 string name = pathTab[pathTab.Length - 1];
-                string theRequest = "INSERT INTO t_folder VALUES (NULL,'" + folder + "', '" + name + "', NULL , NULL);";
+                string tempName = folder.Replace("\\", "\\\\");
+                string theRequest = "INSERT INTO t_folder VALUES (NULL,'" + tempName + "', '" + name + "', NULL , NULL);";
                 dbd.getRequest(theRequest);
             }
         }
@@ -241,12 +257,12 @@ namespace ThesaurusoIndexor
                 foreach (KeyValuePair<string, int> entry in folder.occWord)
                 {
                     //Requète pour ceux qui le possède dans leur contenu
-                    string selectRequestWord = "SELECT motID FROM t_mots WHERE motContenu = \"" + entry.Key + "\";";
+                    string selectRequestWord = "SELECT motID FROM t_mots WHERE motContenu = '" + entry.Key + "';";
                     dicID.Add(dbd.sendRequest(selectRequestWord, 0)[0], entry.Value);
                 }
 
                 //Requète pour ceux qui le possède dans leur contenu
-                string selectRequestFolder = "SELECT folID FROM t_folder WHERE folUrl =\"" + folder.folName + "\";";
+                string selectRequestFolder = "SELECT folID FROM t_folder WHERE folUrl ='" + folder.folName.Replace("\\", "\\\\") + "';";
 
                 //Problème lors de la prise de l'id du fichier par rapport a l'url
                 //On récupère l'id du fichier

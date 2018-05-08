@@ -75,6 +75,7 @@
     <Compile Include="ResearchETML.cs" />
     <Compile Include="WebPage.cs" />
     <Compile Include="Word.cs" />
+    <Compile Include="wordETML.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
