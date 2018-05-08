@@ -21,16 +21,16 @@ namespace ThesaurusoIndexor
         //Connexion à la base de données
         private DBConnect dbd = new DBConnect();
         //Taille max d'un mot
-        const int MAX_SIZE_WORLD = 50;
+        private const int MAX_SIZE_WORLD = 50;
 
         //Chemin
-        const string PATH = @"K:\INF\Eleves\Temp";
+        private const string PATH = @"K:\INF\Eleves\Temp";
 
         //Liste des fichiers et de leurs occurences par mots
         private List<OccFolder> lstOccurence = new List<OccFolder>();
 
         // Create a reader for the given PDF file
-        PdfDocument document;
+        private PdfDocument document;
 
         /// <summary>
         /// Singleton
@@ -109,7 +109,7 @@ namespace ThesaurusoIndexor
                     foreach (OccFolder fol in lstOccurence)
                     {
                         //On vérifie si le nom du fichier correspond au fichier actuel
-                        if (fol.folName == s)
+                        if (fol.FolName == s)
                         {
                             foreach (string word in allWords)
                             {
@@ -126,7 +126,7 @@ namespace ThesaurusoIndexor
                                     else
                                     {
                                         //On incrémente l'occurence du mot
-                                        fol.occWord[changedWord]++;
+                                        fol.OccWord[changedWord]++;
                                     }
 
                                     if (!lstWord.ContainsKey(changedWord))
@@ -156,7 +156,7 @@ namespace ThesaurusoIndexor
                     foreach (OccFolder fol in lstOccurence)
                     {
                         //On vérifie si le nom du fichier correspond au fichier actuel
-                        if (fol.folName == s)
+                        if (fol.FolName == s)
                         {
                             foreach (string word in allWords)
                             {
@@ -174,7 +174,7 @@ namespace ThesaurusoIndexor
                                     else
                                     {
                                         //On incrémente l'occurence du mot
-                                        fol.occWord[changedWord]++;
+                                        fol.OccWord[changedWord]++;
                                     }
 
                                     if (!lstWord.ContainsKey(changedWord))
@@ -254,7 +254,7 @@ namespace ThesaurusoIndexor
                 //Dictionnaire égal à chaque dico des fichiers mais avec les ID
                 Dictionary<string, int> dicID = new Dictionary<string, int>();
 
-                foreach (KeyValuePair<string, int> entry in folder.occWord)
+                foreach (KeyValuePair<string, int> entry in folder.OccWord)
                 {
                     //Requète pour ceux qui le possède dans leur contenu
                     string selectRequestWord = "SELECT motID FROM t_mots WHERE motContenu = '" + entry.Key + "';";
@@ -271,9 +271,9 @@ namespace ThesaurusoIndexor
 
             foreach(OccFolder folder in lstFolderID)
             {
-                foreach(KeyValuePair<string, int> entry in folder.occWord)
+                foreach(KeyValuePair<string, int> entry in folder.OccWord)
                 {
-                    string theRequest = "INSERT INTO t_occurencefolder VALUES (" + entry.Value + ", " + folder.folName + " , " + entry.Key + ");";
+                    string theRequest = "INSERT INTO t_occurencefolder VALUES (" + entry.Value + ", " + folder.FolName + " , " + entry.Key + ");";
                     dbd.getRequest(theRequest);
                 }
             }

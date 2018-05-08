@@ -15,14 +15,9 @@ namespace algoResearch
     class ResearchETML
     {
         /// <summary>
-        /// Dictionnaire pour le résultat des pages
-        /// </summary>
-        private Dictionary<string, string> PagesResult = new Dictionary<string, string>();
-
-        /// <summary>
         /// URL de départ
         /// </summary>
-        string startURL = "https://www.etml.ch/index.php";
+        private string startURL = "https://www.etml.ch/index.php";
 
         /// <summary>
         /// Instance de classe pour le singleton
@@ -37,7 +32,7 @@ namespace algoResearch
         /// <summary>
         /// Tous les mots contenu sur le site de l'ETML, toutes pages confondues
         /// </summary>
-        private List<wordETML> allETMLWords = new List<wordETML>();
+        private List<WordETML> allETMLWords = new List<WordETML>();
 
         /// <summary>
         /// Listes des pages analysées durant le processus de recherche
@@ -62,6 +57,10 @@ namespace algoResearch
         public ResearchETML()
         {
             this.bdd = new DBConnect();
+            if (instance == null)
+            {
+                instance = new ResearchETML();
+            }
         }
 
         /// <summary>
@@ -231,12 +230,12 @@ namespace algoResearch
         /// <param name="list">Liste de tous les éléments</param>
         /// <param name="elementToCheck">Elément cible pour la recherche</param>
         /// <returns>true si inexistant dans la liste</returns>
-        public bool IsNotIn(List<string> list, string elementToCheck)
+        private bool IsNotIn(List<string> list, string elementToCheck)
         {
             return !list.Contains(elementToCheck);
         }
 
-        public bool IsNotIn(List<wordETML> list, wordETML elementToCheck)
+        private bool IsNotIn(List<WordETML> list, WordETML elementToCheck)
         {
             return !list.Contains(elementToCheck);
         }
@@ -264,7 +263,7 @@ namespace algoResearch
             foreach (string word in getTextinHTML(url).Split(' '))
             {
                 string query = "";
-                wordETML newWord = new wordETML(url, word);
+                WordETML newWord = new WordETML(url, word, 1);
                 //Si le mot contient des espace
                 if (word.Contains(" "))
                 {
@@ -322,7 +321,7 @@ namespace algoResearch
         /// </summary>
         /// <param name="newWord">Mot a véfirifer</param>
         /// <param name="url">Référence web lors de l'ajout d'une occurence</param>
-        private void CheckWordAvailability(wordETML newWord, string url)
+        private void CheckWordAvailability(WordETML newWord, string url)
         {
             string query = "";
             //Si le mot n'est pas dans la liste --> ajout
@@ -370,13 +369,13 @@ namespace algoResearch
 
         private void addOccurence(string word)
         {
-            string query = "";
-            query = "SELECT `motID` FROM `t_mots` WHERE `motContenu` = '" + word + "'";
-            List<string> idResults = bdd.sendRequest(query, 0);
-            query = "SET FOREIGN_KEY_CHECKS=0";
-            bdd.getRequest(query);
-            query = "UPDATE t_occurenceweb SET occNumber = ((SELECT occNumber WHERE motID = '" + idResults[0] + "') +1) WHERE motID = '" + idResults[0] + "'; ";
-            bdd.getRequest(query);
+            //string query = "";
+            //query = "SELECT `motID` FROM `t_mots` WHERE `motContenu` = '" + word + "'";
+            //List<string> idResults = bdd.sendRequest(query, 0);
+            //query = "SET FOREIGN_KEY_CHECKS=0";
+            //bdd.getRequest(query);
+            //query = "UPDATE t_occurenceweb SET occNumber = ((SELECT occNumber WHERE motID = '" + idResults[0] + "') +1) WHERE motID = '" + idResults[0] + "'; ";
+            //bdd.getRequest(query);
         }
 
 
@@ -389,7 +388,7 @@ namespace algoResearch
         {
             Console.Clear();
             Console.WriteLine("Mots trouvés sur le site de l'ETML :");
-            foreach (wordETML word in allETMLWords)
+            foreach (WordETML word in allETMLWords)
             {
                 Console.WriteLine(word.Value);
             }

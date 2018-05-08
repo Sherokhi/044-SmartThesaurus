@@ -10,20 +10,24 @@ namespace ThesaurusoIndexor
     {
         //Nom du fichier
         private string name;
-        public string Name { get => name; set => name = value; }
+
         //Chemin du fichier
         private string path;
-        public string Path { get => path; set => path = value; }
+
         //Extension du fichier
         private string extension;
-        public string Extension { get => extension; set => extension = value; }
+
         //Date de la dernière modification
         private DateTime dateModif;
-        public DateTime DateModif { get => dateModif; set => dateModif = value; }
+
         //Poid du fichier
         private int filePoids;
+
         public int FilePoids { get => filePoids; set => filePoids = value; }
-        
+        public string Name { get => name; set => name = value; }
+        public string Path { get => path; set => path = value; }
+        public string Extension { get => extension; set => extension = value; }
+        public DateTime DateModif { get => dateModif; set => dateModif = value; }
 
         public File(string strName, string strPath, string strExt, DateTime dateTimeModif, int intFilePoids)
         {

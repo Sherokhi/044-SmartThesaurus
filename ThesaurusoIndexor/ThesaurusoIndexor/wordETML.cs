@@ -6,18 +6,25 @@ using System.Threading.Tasks;
 
 namespace algoResearch
 {
-    class wordETML
+    class WordETML
     {
         private string url;
         private string value;
+        private int occurences;
 
-        public wordETML(string pURL, string pValue)
+        public WordETML(string pURL, string pValue, int pOccurences)
         {
             url = pURL;
             value = pValue;
+            occurences = pOccurences;
         }
 
         public string Url { get => url;}
         public string Value { get => value;}
+
+        public void AddOccurence()
+        {
+            occurences++;
+        }
     }
 }
