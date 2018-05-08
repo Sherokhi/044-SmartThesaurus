@@ -116,10 +116,10 @@ namespace ThesaurusoIndexor
                                 string changedWord = word.ToLower();
                                 if (word != "" && word.Length > 1 && word.Length < MAX_SIZE_WORLD && Regex.IsMatch(word, "^[A-Za-z0-9@àäéöèüêçï&]+$"))
                                 {
-                                    if (!fol.occWord.ContainsKey(changedWord))
+                                    if (!fol.OccWord.ContainsKey(changedWord))
                                     {
                                         //On crée le mot
-                                        fol.occWord.Add(changedWord, 1);
+                                        fol.OccWord.Add(changedWord, 1);
 
                                     }
                                     //Sinon
@@ -164,10 +164,10 @@ namespace ThesaurusoIndexor
                                 if (word != "" && word.Length > 1 && word.Length < MAX_SIZE_WORLD && Regex.IsMatch(word, "^[A-Za-z0-9@àäéöèüêçï&]+$"))
                                 {
 
-                                    if (!fol.occWord.ContainsKey(changedWord))
+                                    if (!fol.OccWord.ContainsKey(changedWord))
                                     {
                                         //On crée le mot
-                                        fol.occWord.Add(changedWord, 1);
+                                        fol.OccWord.Add(changedWord, 1);
 
                                     }
                                     //Sinon
@@ -262,7 +262,7 @@ namespace ThesaurusoIndexor
                 }
 
                 //Requète pour ceux qui le possède dans leur contenu
-                string selectRequestFolder = "SELECT folID FROM t_folder WHERE folUrl ='" + folder.folName.Replace("\\", "\\\\") + "';";
+                string selectRequestFolder = "SELECT folID FROM t_folder WHERE folUrl ='" + folder.FolName.Replace("\\", "\\\\") + "';";
 
                 //Problème lors de la prise de l'id du fichier par rapport a l'url
                 //On récupère l'id du fichier

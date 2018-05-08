@@ -345,12 +345,23 @@ namespace algoResearch
             }
         }
 
+        /// <summary>
+        /// Vérifie si une page n'est actuellement pas dans la bdd
+        /// </summary>
+        /// <param name="url">url de la page a tester</param>
+        /// <returns>Booléen</returns>
         private bool WebPageIsNotInBdd(string url)
         {
             string query = "SELECT webURL FROM t_web WHERE webURL = '" + url + "';";
             object result = bdd.sendRequest(query, 0);
             return result == null;
         }
+
+        /// <summary>
+        /// Ajoute une occurence pour un mot
+        /// </summary>
+        /// <param name="word"></param>
+        /// <param name="url"></param>
         private void NewWordOccurence(string word, string url)
         {
             string query = "";
@@ -361,6 +372,10 @@ namespace algoResearch
             bdd.getRequest(query);
         }
 
+        /// <summary>
+        /// Crée une instance de page Web 
+        /// </summary>
+        /// <param name="url"></param>
         private void NewWebPage(string url)
         {
             string query = "INSERT INTO t_web (webURL) VALUES ('" + url + "')";
