@@ -33,12 +33,13 @@
             this.btn_Research = new System.Windows.Forms.Button();
             this.txb_Research = new System.Windows.Forms.TextBox();
             this.cbResearchLocation = new System.Windows.Forms.ComboBox();
-            this.rtbResult = new System.Windows.Forms.RichTextBox();
             this.lblResearchNumber = new System.Windows.Forms.Label();
             this.pbLoad = new System.Windows.Forms.ProgressBar();
-            this.rtbResultData = new System.Windows.Forms.RichTextBox();
             this.timerButton = new System.Windows.Forms.Timer(this.components);
             this.btnLoad = new System.Windows.Forms.Button();
+            this.rtbResultWeb = new System.Windows.Forms.RichTextBox();
+            this.dgvData = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvData)).BeginInit();
             this.SuspendLayout();
             // 
             // btn_Research
@@ -73,16 +74,6 @@
             this.cbResearchLocation.Size = new System.Drawing.Size(121, 21);
             this.cbResearchLocation.TabIndex = 2;
             // 
-            // rtbResult
-            // 
-            this.rtbResult.BackColor = System.Drawing.Color.White;
-            this.rtbResult.Location = new System.Drawing.Point(13, 95);
-            this.rtbResult.Name = "rtbResult";
-            this.rtbResult.ReadOnly = true;
-            this.rtbResult.Size = new System.Drawing.Size(492, 310);
-            this.rtbResult.TabIndex = 4;
-            this.rtbResult.Text = "";
-            // 
             // lblResearchNumber
             // 
             this.lblResearchNumber.AutoSize = true;
@@ -100,40 +91,52 @@
             this.pbLoad.Size = new System.Drawing.Size(704, 23);
             this.pbLoad.TabIndex = 6;
             // 
-            // rtbResultData
-            // 
-            this.rtbResultData.BackColor = System.Drawing.Color.White;
-            this.rtbResultData.Location = new System.Drawing.Point(521, 95);
-            this.rtbResultData.Name = "rtbResultData";
-            this.rtbResultData.ReadOnly = true;
-            this.rtbResultData.Size = new System.Drawing.Size(492, 310);
-            this.rtbResultData.TabIndex = 7;
-            this.rtbResultData.Text = "";
-            // 
             // timerButton
             // 
             this.timerButton.Tick += new System.EventHandler(this.timerButton_Tick);
             // 
             // btnLoad
             // 
-            this.btnLoad.Location = new System.Drawing.Point(13, 414);
+            this.btnLoad.Location = new System.Drawing.Point(12, 533);
             this.btnLoad.Name = "btnLoad";
-            this.btnLoad.Size = new System.Drawing.Size(1000, 23);
+            this.btnLoad.Size = new System.Drawing.Size(947, 23);
             this.btnLoad.TabIndex = 8;
             this.btnLoad.Text = "Synchroniser";
             this.btnLoad.UseVisualStyleBackColor = true;
             this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
             // 
+            // rtbResultWeb
+            // 
+            this.rtbResultWeb.BackColor = System.Drawing.Color.White;
+            this.rtbResultWeb.Location = new System.Drawing.Point(12, 352);
+            this.rtbResultWeb.Name = "rtbResultWeb";
+            this.rtbResultWeb.ReadOnly = true;
+            this.rtbResultWeb.Size = new System.Drawing.Size(947, 168);
+            this.rtbResultWeb.TabIndex = 9;
+            this.rtbResultWeb.Text = "";
+            // 
+            // dgvData
+            // 
+            this.dgvData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvData.Location = new System.Drawing.Point(17, 95);
+            this.dgvData.MultiSelect = false;
+            this.dgvData.Name = "dgvData";
+            this.dgvData.ReadOnly = true;
+            this.dgvData.Size = new System.Drawing.Size(942, 240);
+            this.dgvData.TabIndex = 10;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1026, 449);
+            this.BackColor = System.Drawing.Color.LightGray;
+            this.ClientSize = new System.Drawing.Size(975, 577);
+            this.Controls.Add(this.dgvData);
+            this.Controls.Add(this.rtbResultWeb);
             this.Controls.Add(this.btnLoad);
-            this.Controls.Add(this.rtbResultData);
             this.Controls.Add(this.pbLoad);
             this.Controls.Add(this.lblResearchNumber);
-            this.Controls.Add(this.rtbResult);
             this.Controls.Add(this.cbResearchLocation);
             this.Controls.Add(this.txb_Research);
             this.Controls.Add(this.btn_Research);
@@ -142,6 +145,7 @@
             this.Name = "Form1";
             this.Text = "Thesaurus - INDEXOR";
             this.Load += new System.EventHandler(this.Form1_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvData)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -149,14 +153,14 @@
 
         #endregion
         private System.Windows.Forms.ComboBox cbResearchLocation;
-        public System.Windows.Forms.RichTextBox rtbResult;
         public System.Windows.Forms.Label lblResearchNumber;
         public System.Windows.Forms.ProgressBar pbLoad;
         public System.Windows.Forms.Button btn_Research;
-        public System.Windows.Forms.RichTextBox rtbResultData;
         private System.Windows.Forms.Timer timerButton;
         private System.Windows.Forms.Button btnLoad;
         public System.Windows.Forms.TextBox txb_Research;
+        public System.Windows.Forms.RichTextBox rtbResultWeb;
+        public System.Windows.Forms.DataGridView dgvData;
     }
 }
 

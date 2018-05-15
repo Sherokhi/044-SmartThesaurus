@@ -1,11 +1,7 @@
 ﻿///ETML
 ///Auteur : Loïc Rosset
 ///Date : 27.02.2018
-<<<<<<< HEAD
 ///Description : Classe qui va recherchée les mots dans la base de données et l'affiche sur le programme
-=======
-///Description : Classe qui va rechercher les mots dans la base de données et l'affiche sur le programme
->>>>>>> 3b76faade99d10589d774a4ee8f370fed1e658ef
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -31,7 +27,15 @@ namespace ThesaurusoIndexor
         /// <param name="strResearch"></param>
         public void GetResearch(string strResearch)
         {
-            userSearch = strResearch.Split(' ');
+            //Si la personne veut faire une recherche avec des espaces
+            if (strResearch.Contains("\""))
+            {
+                userSearch = strResearch.Split('"');
+            }
+            else
+            {
+                userSearch = strResearch.Split(' ');
+            }
         }
 
         /// <summary>
@@ -67,9 +71,9 @@ namespace ThesaurusoIndexor
             //Liste des mots qui contiennent la recherche
             List<string> lstWord = new List<string>();
 
-            form1.rtbResult.Text = "";
-            form1.rtbResultData.Text = "";
             form1.pbLoad.Value = 0;
+
+            form1.dgvData.Rows.Clear();
 
             allData += "====================================================";
             allData += "\r\n";
@@ -89,7 +93,7 @@ namespace ThesaurusoIndexor
             {
                 string theRequest = "";
                 string theRequest2 = "";
-
+                
                 if (form1.txb_Research.Text == "")
                 {
                     //Requète pour ceux qui le possède dans leur contenu
@@ -97,11 +101,10 @@ namespace ThesaurusoIndexor
                 }
                 else
                 {
-                    //TODO trier la requête en récupérant dans t_occurencefolder et pas t_folder car on doit order by avec occNumber
                     //Requète pour ceux qui le possède dans leur contenu
-                    theRequest = "SELECT DISTINCT t_folder.* FROM t_occurencefolder, t_folder, t_mots WHERE t_mots.motContenu LIKE '%" + str + "%' AND t_occurencefolder.folID = t_folder.folID AND t_occurencefolder.motID = t_mots.motID AND t_mots.motIsTitle = false ORDER BY ;";
+                    theRequest = "SELECT DISTINCT t_folder.* FROM t_occurencefolder, t_folder, t_mots WHERE t_mots.motContenu = '" + str + "' AND t_occurencefolder.folID = t_folder.folID AND t_occurencefolder.motID = t_mots.motID AND t_mots.motIsTitle = false ORDER BY t_occurencefolder.occNumber ASC ;";
                     //Requète pour ceux qui le possède dans leur nom de fichier
-                    theRequest2 = "SELECT DISTINCT * FROM t_folder WHERE folName LIKE '%" + str + "%';";
+                    theRequest2 = "SELECT DISTINCT * FROM t_folder WHERE folName = '" + str + "';";
                 }
                 //On récupère le contenu du mot
                 List<string> files = dbd.sendRequest(theRequest, 1);
@@ -110,6 +113,8 @@ namespace ThesaurusoIndexor
 
                 form1.pbLoad.Maximum = files.Count() + filesTitle.Count();
                 form1.btn_Research.Enabled = false;
+
+                int i = 0;
 
                 //Pour les noms de fichiers
                 foreach (string s in filesTitle)
@@ -120,6 +125,10 @@ namespace ThesaurusoIndexor
                         if (!allData.Contains(s))
                         {
                             allData += s + "\r\n";
+                            form1.dgvData.Rows.Add();
+                            form1.dgvData[0, i].Value = s;
+                            form1.dgvData[1, i].Value = "Nom";
+                            i++;
                         }
                     }
                     if (form1.pbLoad.Value < form1.pbLoad.Maximum)
@@ -146,7 +155,14 @@ namespace ThesaurusoIndexor
                         if (text.Contains(str))
                         {
                             counter++;
-                            allData2 += s + "\r\n";
+                            if(!allData2.Contains(s))
+                            {
+                                allData2 += s + "\r\n";
+                                form1.dgvData.Rows.Add();
+                                form1.dgvData[0, i].Value = s;
+                                form1.dgvData[1, i].Value = "Contenu";
+                                i++;
+                            }
                         }
                     }
 
@@ -160,8 +176,6 @@ namespace ThesaurusoIndexor
                     }
                 }
 
-                form1.rtbResult.Text = allData;
-                form1.rtbResultData.Text = allData2;
                 form1.Cursor = Cursors.Arrow;
                 ////Nombre de fichiers trouvés
                 form1.lblResearchNumber.Text = files.Count().ToString();

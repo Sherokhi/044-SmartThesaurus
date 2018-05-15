@@ -93,6 +93,10 @@ namespace ThesaurusoIndexor
         private void Form1_Load(object sender, EventArgs e)
         {
             //database.CreateDataBase();
+            //On remplit le datagridview
+            dgvData.Columns.Add("urlFolder", "URL");
+
+            dgvData.Columns.Add("provFolder", "Provenance");
         }
 
         private void timerButton_Tick(object sender, EventArgs e)
