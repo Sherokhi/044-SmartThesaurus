@@ -22,7 +22,7 @@ namespace ThesaurusoIndexor
 
         //Poid du fichier
         private int filePoids;
-
+        
         public int FilePoids { get => filePoids; set => filePoids = value; }
         public string Name { get => name; set => name = value; }
         public string Path { get => path; set => path = value; }

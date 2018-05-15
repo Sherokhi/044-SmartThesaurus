@@ -382,6 +382,7 @@ namespace algoResearch
             bdd.getRequest(query);
         }
 
+
         private void addOccurence(string word)
         {
             //string query = "";

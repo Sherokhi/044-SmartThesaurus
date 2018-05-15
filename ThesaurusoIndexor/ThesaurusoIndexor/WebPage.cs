@@ -22,7 +22,7 @@ namespace algoResearch
         /// <summary>
         /// Listes des mots sur la pages
         /// </summary>
-        private List<Word> words;
+        private List<WordETML> words;
 
         /// <summary>
         /// Constructeur de classe
@@ -31,7 +31,7 @@ namespace algoResearch
         public WebPage(string pURL)
         {
             this.selfURL = pURL;
-            this.words = new List<Word>();
+            this.words = new List<WordETML>();
             totalWordsOccurences = 0;
         }
 
@@ -40,23 +40,23 @@ namespace algoResearch
         /// </summary>
         /// <param name="pWordToUp"></param>
         /// <param name="nbrOccurence"></param>
-        public void AddWordOccurence(string pWordToUp, int nbrOccurence)
+        public void AddWordOccurence(string pWordToUp)
         {
             bool found = false;
-            foreach(Word word in words)
+            foreach(WordETML word in words)
             {
-                if(word.Text == pWordToUp)
+                if(word.Value == pWordToUp)
                 {
-                    word.NewOccurence(nbrOccurence);
-                    totalWordsOccurences += nbrOccurence;
+                    word.AddOccurence();
+                    totalWordsOccurences++;
                     found = true;
                 }
             }
 
             if (!found)
             {
-                Word newWord = new Word(pWordToUp);
-                newWord.NewOccurence(nbrOccurence);
+                WordETML newWord = new WordETML(selfURL, pWordToUp, 0);
+                newWord.AddOccurence();
                 words.Add(newWord);
             }
         }
