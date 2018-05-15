@@ -1,10 +1,14 @@
 ﻿///ETML
 ///Auteur : Loïc Rosset
 ///Date : 27.02.2018
+<<<<<<< HEAD
 ///Description : Classe qui va recherchée les mots dans la base de données et l'affiche sur le programme
+=======
+///Description : Classe qui va rechercher les mots dans la base de données et l'affiche sur le programme
+>>>>>>> 3b76faade99d10589d774a4ee8f370fed1e658ef
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using static ThesaurusoIndexor.Program;
 

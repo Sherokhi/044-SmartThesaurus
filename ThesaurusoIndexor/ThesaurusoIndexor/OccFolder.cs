@@ -8,21 +8,24 @@ namespace ThesaurusoIndexor
 {
     public class OccFolder
     {
-        public string folName;
-        public Dictionary<string, int> occWord;
+        private string folName;
+        private Dictionary<string, int> occWord;
 
         //Constructeur de base
         public OccFolder(string name)
         {
-            folName = name;
-            occWord = new Dictionary<string, int>();
+            FolName = name;
+            OccWord = new Dictionary<string, int>();
         }
 
         //Constructeur complet pour un fichier
         public OccFolder(string name, Dictionary<string, int> dic)
         {
-            folName = name;
-            occWord = dic;
+            FolName = name;
+            OccWord = dic;
         }
+
+        public string FolName { get => folName; set => folName = value; }
+        public Dictionary<string, int> OccWord { get => occWord; set => occWord = value; }
     }
 }
