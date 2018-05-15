@@ -148,7 +148,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.TextBox txb_Research;
         private System.Windows.Forms.ComboBox cbResearchLocation;
         public System.Windows.Forms.RichTextBox rtbResult;
         public System.Windows.Forms.Label lblResearchNumber;
@@ -157,6 +156,7 @@
         public System.Windows.Forms.RichTextBox rtbResultData;
         private System.Windows.Forms.Timer timerButton;
         private System.Windows.Forms.Button btnLoad;
+        public System.Windows.Forms.TextBox txb_Research;
     }
 }
 

@@ -100,24 +100,29 @@ namespace ThesaurusoIndexor
         /// <param name="request"></param>
         public List<string> sendRequest(string request, int colonne)
         {
-            //Commande mysql
-            MySqlCommand mySqlRequest = new MySqlCommand(request, _Connection);
-            
-            //Datareader qui permet de faire un select
-            MySqlDataReader dataReader = mySqlRequest.ExecuteReader();
-            
             //Tableau de string qui va contenir les mots
             List<string> lstString = new List<string>();
-
-
-            //Tant qu'on peut lire le reader
-            while (dataReader.Read())
+            try
             {
-                //Sélectionne motcontenu
-                lstString.Add(dataReader.GetString(colonne));
+                //Commande mysql
+                MySqlCommand mySqlRequest = new MySqlCommand(request, _Connection);
+
+                //Datareader qui permet de faire un select
+                MySqlDataReader dataReader = mySqlRequest.ExecuteReader();
+
+                //Tant qu'on peut lire le reader
+                while (dataReader.Read())
+                {
+                    //Sélectionne motcontenu
+                    lstString.Add(dataReader.GetString(colonne));
+                }
+                dataReader.Close();
+                dataReader.Dispose();
             }
-            dataReader.Close();
-            dataReader.Dispose();
+            catch
+            {
+
+            }
             return lstString;
 
         }

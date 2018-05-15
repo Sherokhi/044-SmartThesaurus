@@ -114,7 +114,9 @@ namespace ThesaurusoIndexor
                             foreach (string word in allWords)
                             {
                                 string changedWord = word.ToLower();
-                                if (word != "" && word.Length > 1 && word.Length < MAX_SIZE_WORLD && Regex.IsMatch(word, "^[A-Za-z0-9@àäéöèüêçï&]+$"))
+
+                                //Ne prend pas les accents
+                                if (word != "" && word.Length > 1 && word.Length < MAX_SIZE_WORLD && Regex.IsMatch(word, "^[A-Za-z0-9@&]+$"))
                                 {
                                     if (!fol.occWord.ContainsKey(changedWord))
                                     {
@@ -161,7 +163,7 @@ namespace ThesaurusoIndexor
                             foreach (string word in allWords)
                             {
                                 string changedWord = word.ToLower();
-                                if (word != "" && word.Length > 1 && word.Length < MAX_SIZE_WORLD && Regex.IsMatch(word, "^[A-Za-z0-9@àäéöèüêçï&]+$"))
+                                if (word != "" && word.Length > 1 && word.Length < MAX_SIZE_WORLD && Regex.IsMatch(word, "^[A-Za-z0-9@&]+$"))
                                 {
 
                                     if (!fol.occWord.ContainsKey(changedWord))
