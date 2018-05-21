@@ -37,7 +37,7 @@ namespace algoResearch
         /// <summary>
         /// Tous les mots contenu sur le site de l'ETML, toutes pages confondues
         /// </summary>
-        private List<wordETML> allETMLWords = new List<wordETML>();
+        private List<WordETML> allETMLWords = new List<WordETML>();
 
         /// <summary>
         /// Listes des pages analysées durant le processus de recherche
@@ -142,7 +142,7 @@ namespace algoResearch
                 //}
                 html = html.ToLower();
             }
-            catch (Exception e)
+            catch
             {
                 pagesChecked.Add(url);
                 //MessageBox.Show("Une erreur s'est produite : " + e.Message);
@@ -251,7 +251,7 @@ namespace algoResearch
             //Pour chaque mots trouvé sur la page
             foreach (string word in getTextinHTML(url).Split(' '))
             {
-                wordETML newWord = new wordETML(url, word);
+                WordETML newWord = new WordETML(url, word, 0);
                 //Si le mot contient des espace
                 if (word.Contains(" "))
                 {
@@ -450,7 +450,7 @@ namespace algoResearch
         {
             Console.Clear();
             Console.WriteLine("Mots trouvés sur le site de l'ETML :");
-            foreach (wordETML word in allETMLWords)
+            foreach (WordETML word in allETMLWords)
             {
                 Console.WriteLine(word.Value);
             }

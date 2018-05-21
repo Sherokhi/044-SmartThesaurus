@@ -12,9 +12,9 @@ namespace ThesaurusoIndexor
 {
     public partial class Form1 : Form
     {
-        DBConnect db;
         ResearchDatabase searchK;
         ResearchETML researchETML;
+
         public Form1()
         {
             InitializeComponent();
@@ -37,26 +37,21 @@ namespace ThesaurusoIndexor
                 case 2: //Si la recherche doit chercher sur educanet2.ch
                     break;
                 case 3: //Si la recherche doit chercher sur K:\INF\ELEVE\Temp
+
+                    //Disparition du bouton car possibilité de spammer
                     btn_Research.Location = new Point(100000, 100000);
                     timerButton.Enabled = true;
 
                     Cursor = Cursors.WaitCursor;
-                    searchK = ResearchDatabase.CreateResearch();
-                    searchK.GetResearch(txb_Research.Text);
-                    searchK.BeginTheReasearchWord();
 
+                    //Création de la recherche dans laa base de données
+                    searchK = ResearchDatabase.CreateResearch();
+                    //Initialisation de la recherche
+                    searchK.GetResearch(txb_Research.Text);
+                    //Lancement de la recherche
+                    searchK.BeginTheReasearchWord();
                     break;
             }
-
-        }
-
-        private void txb_Research_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        public void label_Click(object sender, EventArgs e)
-        {
 
         }
 
@@ -92,7 +87,6 @@ namespace ThesaurusoIndexor
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //database.CreateDataBase();
             //On remplit le datagridview
             dgvData.Columns.Add("urlFolder", "URL");
 
@@ -101,14 +95,36 @@ namespace ThesaurusoIndexor
 
         private void timerButton_Tick(object sender, EventArgs e)
         {
-            btn_Research.Location = new Point( 884, 9);
+            //On réaffiche le bouton
+            btn_Research.Location = new Point(884, 9);
             timerButton.Enabled = false;
         }
 
         private void btnLoad_Click(object sender, EventArgs e)
         {
+            //Rafraichissement de la base de données
             FillK recherche = FillK.CreateResearch();
             recherche.BeginTheReasearchWord();
+        }
+
+        private void dgvData_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+            //Ajout du clique pour le datagridview (à tester)
+            if (e.ColumnIndex == 0)
+            {
+                String file = dgvData.Rows[e.RowIndex].Cells[0].Value.ToString();
+                System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo(file, "");
+                try
+                {
+                    System.Diagnostics.Process.Start(psi);
+                }
+
+                catch
+                {
+                    MessageBox.Show("Erreur survenue, le fichier n'existe peut être plus.");
+                }
+            }
         }
     }
 }

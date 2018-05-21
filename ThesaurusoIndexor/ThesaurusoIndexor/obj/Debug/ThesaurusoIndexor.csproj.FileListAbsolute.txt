@@ -52,3 +52,17 @@ F:\Applications-Projets\044-P_OO\NewClone\ThesaurusoIndexor\ThesaurusoIndexor\ob
 F:\Applications-Projets\044-P_OO\NewClone\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.csproj.GenerateResource.Cache
 F:\Applications-Projets\044-P_OO\NewClone\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.exe
 F:\Applications-Projets\044-P_OO\NewClone\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.pdb
+C:\Users\Loic\Desktop\smartThesaurus\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.csprojResolveAssemblyReference.cache
+C:\Users\Loic\Desktop\smartThesaurus\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.Form1.resources
+C:\Users\Loic\Desktop\smartThesaurus\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.Properties.Resources.resources
+C:\Users\Loic\Desktop\smartThesaurus\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.csproj.GenerateResource.Cache
+C:\Users\Loic\Desktop\smartThesaurus\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.csproj.CoreCompileInputs.cache
+C:\Users\Loic\Desktop\smartThesaurus\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.exe
+C:\Users\Loic\Desktop\smartThesaurus\ThesaurusoIndexor\ThesaurusoIndexor\obj\Debug\ThesaurusoIndexor.pdb
+C:\Users\Loic\Desktop\smartThesaurus\ThesaurusoIndexor\ThesaurusoIndexor\bin\Debug\ThesaurusoIndexor.exe.config
+C:\Users\Loic\Desktop\smartThesaurus\ThesaurusoIndexor\ThesaurusoIndexor\bin\Debug\ThesaurusoIndexor.exe
+C:\Users\Loic\Desktop\smartThesaurus\ThesaurusoIndexor\ThesaurusoIndexor\bin\Debug\ThesaurusoIndexor.pdb
+C:\Users\Loic\Desktop\smartThesaurus\ThesaurusoIndexor\ThesaurusoIndexor\bin\Debug\itextsharp.dll
+C:\Users\Loic\Desktop\smartThesaurus\ThesaurusoIndexor\ThesaurusoIndexor\bin\Debug\MySql.Data.dll
+C:\Users\Loic\Desktop\smartThesaurus\ThesaurusoIndexor\ThesaurusoIndexor\bin\Debug\itextsharp.xml
+C:\Users\Loic\Desktop\smartThesaurus\ThesaurusoIndexor\ThesaurusoIndexor\bin\Debug\MySql.Data.xml

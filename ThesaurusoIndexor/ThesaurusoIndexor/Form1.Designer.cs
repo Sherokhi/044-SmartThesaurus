@@ -58,7 +58,6 @@
             this.txb_Research.Name = "txb_Research";
             this.txb_Research.Size = new System.Drawing.Size(704, 20);
             this.txb_Research.TabIndex = 1;
-            this.txb_Research.TextChanged += new System.EventHandler(this.txb_Research_TextChanged);
             // 
             // cbResearchLocation
             // 
@@ -125,6 +124,7 @@
             this.dgvData.ReadOnly = true;
             this.dgvData.Size = new System.Drawing.Size(942, 240);
             this.dgvData.TabIndex = 10;
+            this.dgvData.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvData_CellContentClick);
             // 
             // Form1
             // 

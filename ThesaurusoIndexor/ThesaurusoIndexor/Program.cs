@@ -1,5 +1,5 @@
 ﻿///ETML
-///Auteur : Jérémie Perret
+///Auteur : Jérémie Perret et Loïc Rosset
 ///Date : 16.01.2018
 ///Description : Classe de connection et de gestion SQL
 using System;

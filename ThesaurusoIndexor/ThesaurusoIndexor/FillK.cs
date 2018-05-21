@@ -29,8 +29,6 @@ namespace ThesaurusoIndexor
         //Liste des fichiers et de leurs occurences par mots
         private List<OccFolder> lstOccurence = new List<OccFolder>();
 
-        // Create a reader for the given PDF file
-        private PdfDocument document;
 
         /// <summary>
         /// Singleton
@@ -64,6 +62,7 @@ namespace ThesaurusoIndexor
             //Liste des fichiers qui contiennent la recherche
             List<string> lstFolder = new List<string>();
 
+            //Tableau pour séparer les mots d'un fichier
             string[] allWords;
 
             try
@@ -191,20 +190,12 @@ namespace ThesaurusoIndexor
 
                 }
             }
-            catch (UnauthorizedAccessException UAEx)
-            {
-
-            }
-            catch (PathTooLongException PathEx)
-            {
-
-            }
             catch
             {
 
             }
 
-
+            //Envoie à la base de données
             sendDataFolder(lstFolder);
             sendDataWord(lstWord);
             sendDataOccurence(lstOccurence);

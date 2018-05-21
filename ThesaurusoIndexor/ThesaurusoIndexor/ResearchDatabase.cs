@@ -16,11 +16,6 @@ namespace ThesaurusoIndexor
         private static ResearchDatabase actualResaerch;
         private DBConnect dbd = new DBConnect();
 
-        public ResearchDatabase()
-        {
-
-        }
-
         /// <summary>
         /// Initialise la recherche de l'utilisateur
         /// </summary>
@@ -52,42 +47,19 @@ namespace ThesaurusoIndexor
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        public void BeginTheResearchFolder()
-        {
-
-        }
-
-        /// <summary>
-        /// Lance la recherche sur le K pour les mots
+        /// Lance la recherche sur le K
         /// </summary>
         public void BeginTheReasearchWord()
         {
             string allData = "";
-            string allData2 = "";
-            int counter = 0;
-            string text;
             //Liste des mots qui contiennent la recherche
             List<string> lstWord = new List<string>();
 
+            //Réinitilisation de la barre de rechrche
             form1.pbLoad.Value = 0;
 
+            //Effacement du datagridview
             form1.dgvData.Rows.Clear();
-
-            allData += "====================================================";
-            allData += "\r\n";
-            allData += "Fichiers qui possèdent la recherche dans leur chemin";
-            allData += "\r\n";
-            allData += "====================================================";
-            allData += "\r\n";
-
-            allData2 += "====================================================";
-            allData2 += "\r\n";
-            allData2 += "Fichiers qui possèdent la recherche dans leur contenu";
-            allData2 += "\r\n";
-            allData2 += "====================================================";
-            allData2 += "\r\n";
 
             foreach (string str in userSearch)
             {
@@ -104,7 +76,7 @@ namespace ThesaurusoIndexor
                     //Requète pour ceux qui le possède dans leur contenu
                     theRequest = "SELECT DISTINCT t_folder.* FROM t_occurencefolder, t_folder, t_mots WHERE t_mots.motContenu = '" + str + "' AND t_occurencefolder.folID = t_folder.folID AND t_occurencefolder.motID = t_mots.motID AND t_mots.motIsTitle = false ORDER BY t_occurencefolder.occNumber ASC ;";
                     //Requète pour ceux qui le possède dans leur nom de fichier
-                    theRequest2 = "SELECT DISTINCT * FROM t_folder WHERE folName = '" + str + "';";
+                    theRequest2 = "SELECT DISTINCT * FROM t_folder WHERE folName LIKE '" + str + ".%' OR folName = '" + str + "' ;";
                 }
                 //On récupère le contenu du mot
                 List<string> files = dbd.sendRequest(theRequest, 1);
@@ -119,7 +91,7 @@ namespace ThesaurusoIndexor
                 //Pour les noms de fichiers
                 foreach (string s in filesTitle)
                 {
-                    counter++;
+
                     if (s != null)
                     {
                         if (!allData.Contains(s))
@@ -131,6 +103,7 @@ namespace ThesaurusoIndexor
                             i++;
                         }
                     }
+
                     if (form1.pbLoad.Value < form1.pbLoad.Maximum)
                     {
                         form1.pbLoad.Value++;
@@ -143,33 +116,23 @@ namespace ThesaurusoIndexor
                 //Pour les fichiers qui contiennent la contrainte dans leur contenu
                 foreach (string s in files)
                 {
+                    if (s != null)
+                    {
+                        if (!allData.Contains(s))
+                        {
+                            allData += s + "\r\n";
+                            form1.dgvData.Rows.Add();
+                            form1.dgvData[0, i].Value = s;
+                            form1.dgvData[1, i].Value = "Contenu";
+                            i++;
+                        }
+                    }
                     if (form1.pbLoad.Value < form1.pbLoad.Maximum)
                     {
                         form1.pbLoad.Value++;
                     }
                     form1.Update();
-                    try
-                    {
-                        text = System.IO.File.ReadAllText(s);
-                        //Prend tous les fichiers qui possèdent le string dans leur contenu
-                        if (text.Contains(str))
-                        {
-                            counter++;
-                            if(!allData2.Contains(s))
-                            {
-                                allData2 += s + "\r\n";
-                                form1.dgvData.Rows.Add();
-                                form1.dgvData[0, i].Value = s;
-                                form1.dgvData[1, i].Value = "Contenu";
-                                i++;
-                            }
-                        }
-                    }
 
-                    catch
-                    {
-
-                    }
                     if (!lstWord.Contains(Path.GetFileName(s)))
                     {
                         lstWord.Add(Path.GetFileName(s));
@@ -178,7 +141,7 @@ namespace ThesaurusoIndexor
 
                 form1.Cursor = Cursors.Arrow;
                 ////Nombre de fichiers trouvés
-                form1.lblResearchNumber.Text = files.Count().ToString();
+                form1.lblResearchNumber.Text = form1.pbLoad.Value.ToString();
                 form1.btn_Research.Enabled = true;
             }
         }
